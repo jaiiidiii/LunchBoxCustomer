@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">Lunch Box</string>
+    <string name="sign_in">Sign In</string>
+    <string name="already_have_an_account">Already have an account?</string>
+    <string name="sign_up_for_free">Sign Up For Free</string>
+    <string name="hint_pass">Password</string>
+    <string name="hint_username">Username</string>
+    <string name="fullname">Full Name</string>
+    <string name="email">Email</string>
+    <string name="create">Create</string>
+    <string name="usercnic">CNIC</string>
+    <string name="userphone">Phone Number</string>
+    <string name="useraddress">Full Address</string>
+
+    <string name="navigation_drawer_open">Open navigation Drawer</string>
+    <string name="navigation_drawer_close">Close navigation Drawer</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+</resources>
