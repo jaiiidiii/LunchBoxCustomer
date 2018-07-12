@@ -23,13 +23,24 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
+import com.jayzonsolutions.LunchBox.ApiUtils;
 import com.jayzonsolutions.LunchBox.PlaceOrderActivity;
 import com.jayzonsolutions.LunchBox.R;
+import com.jayzonsolutions.LunchBox.Service.FoodmakerService;
 import com.jayzonsolutions.LunchBox.model.Categories;
+import com.jayzonsolutions.LunchBox.model.FoodmakerDishes;
 import com.jayzonsolutions.LunchBox.model.Products;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class DetailFragment extends Fragment {
@@ -46,7 +57,8 @@ public class DetailFragment extends Fragment {
     private RecycleAdapter_AddProduct mAdapter;
     private int status_code;
     private String token, totalPriceOfProducts;
-
+    private FoodmakerService foodmakerService;
+    List<FoodmakerDishes> foodmakerDishesList;
 
 //    private ProductArrayList productsArrayList;
 
@@ -79,22 +91,63 @@ public class DetailFragment extends Fragment {
 
         //    initComponent(view);
 
-
+        foodmakerDishesList = new ArrayList<>();
         categories = new Categories();
         categories.productsArrayList = new ArrayList<>();
+        mAdapter = new RecycleAdapter_AddProduct(getActivity(), foodmakerDishesList);
+        recyclerView = view.findViewById(R.id.recyclerview);
 
 
-        for (int i = 0; i < NamES.length; i++) {
-            Products products = new Products();
-            products.setName(NamES[i]);
-            products.setPrice(PRICE[i]);
-            products.setImage(IMAGES[i]);
-            categories.productsArrayList.add(products);
 
-        }
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(mAdapter);
+      //  Toast.makeText(getActivity().getApplicationContext(), "id =" + id, Toast.LENGTH_SHORT).show();
+
+
+/**
+ *start
+ ** call to get foodmaker dishes **/
+
+        foodmakerService = ApiUtils.getFoodmakerService();
+
+        foodmakerService.getDishesByFoodmakerId(id).enqueue(new Callback<List<FoodmakerDishes>>() {
+            @Override
+            public void onResponse(@NonNull Call<List<FoodmakerDishes>> call, @NonNull Response<List<FoodmakerDishes>> response) {
+                Toast.makeText(getContext(), "success" , Toast.LENGTH_LONG).show();
+
+              foodmakerDishesList = response.body();
+              mAdapter.setFoodmakerDishesList(foodmakerDishesList);
+ /*               for (FoodmakerDishes foodmakerDishes : response.body()) {
+                    Log.d("TAG", "Response = " + foodmakerDishes.getDish().getDishName());
+
+                    Toast.makeText(getContext(), "success" + foodmakerDishes.getDish().getDishName(), Toast.LENGTH_SHORT).show();
+
+
+
+                }
+ */
+
+
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<List<FoodmakerDishes>> call, @NonNull Throwable t) {
+                Toast.makeText(getContext(), "Response Failed", Toast.LENGTH_SHORT).show();
+                Log.d("TAG", "failed" );
+            }
+        });
+
+
+
+        /**
+         *End
+         ** call to get foodmaker dishes**/
+
+
         btn = view.findViewById(R.id.btnDetail);
 
-        recyclerView = view.findViewById(R.id.recyclerview);
 
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,13 +161,7 @@ public class DetailFragment extends Fragment {
         });
 
 
-        mAdapter = new RecycleAdapter_AddProduct(getActivity(), categories);
 
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(mAdapter);
-        Toast.makeText(getActivity().getApplicationContext(), "id =" + id, Toast.LENGTH_SHORT).show();
 
 
         return view;
@@ -128,12 +175,17 @@ public class DetailFragment extends Fragment {
         Context context;
         boolean showingFirst = true;
         int recentPos = -1;
-        private Categories categories;
+        private List<FoodmakerDishes> foodmakerDishesList;
 
 
-        RecycleAdapter_AddProduct(Context context, Categories categories) {
-            this.categories = categories;
+        RecycleAdapter_AddProduct(Context context, List<FoodmakerDishes> foodmakerDishesList) {
+            this.foodmakerDishesList = foodmakerDishesList;
             this.context = context;
+        }
+
+        void setFoodmakerDishesList(List<FoodmakerDishes> foodmakerDishesList) {
+            this.foodmakerDishesList = foodmakerDishesList;
+            notifyDataSetChanged();
         }
 
         @NonNull
@@ -153,14 +205,24 @@ public class DetailFragment extends Fragment {
         public void onBindViewHolder(@NonNull final RecycleAdapter_AddProduct.MyViewHolder holder, final int position) {
 //            Products movie = productsList.get(position);
 
-            holder.title.setText(categories.getProductsArrayList().get(position).getName());
-            holder.price.setText(categories.getProductsArrayList().get(position).getPrice());
-            holder.quantityTxt.setText(categories.getProductsArrayList().get(position).getQuantity() + "");
+            holder.title.setText(foodmakerDishesList.get(position).getDish().getDishName());
+            holder.price.setText(foodmakerDishesList.get(position).getDish().getDishSellingPrice().toString());
+          //  holder.price.setText(categories.getProductsArrayList().get(position).getPrice());
+            holder.quantityTxt.setText(foodmakerDishesList.get(position).getDish().getDishQuantity().toString());
+         //   holder.quantityTxt.setText(categories.getProductsArrayList().get(position).getQuantity() + "");
 
 
-            holder.quantity = categories.getProductsArrayList().get(position).getQuantity();
-            int totalPrice = holder.quantity * Integer.parseInt(categories.getProductsArrayList().get(position).getPrice());
+            holder.quantity = 1;
+            holder.quantity = foodmakerDishesList.get(position).getDish().getDishQuantity();
+         //   holder.quantity = categories.getProductsArrayList().get(position).getQuantity();
+            int totalPrice = holder.quantity * foodmakerDishesList.get(position).getDish().getDishSellingPrice();
 
+
+         /*   Glide.with(context).load(ApiUtils.BASE_URL+"images/es2.jpg").
+                    apply(RequestOptions.
+                            centerCropTransform().fitCenter().
+                            diskCacheStrategy(DiskCacheStrategy.ALL)).
+                    into(holder.image);*/
 
             if (position == recentPos) {
                 Log.e("pos", "" + recentPos);
@@ -172,7 +234,8 @@ public class DetailFragment extends Fragment {
 
             }
 
-            if (categories.getProductsArrayList().get(position).getQuantity() > 0) {
+
+            if (holder.quantity > 0) {
                 holder.quantityTxt.setVisibility(View.VISIBLE);
                 holder.llMinus.setVisibility(View.VISIBLE);
             } else {
@@ -181,8 +244,9 @@ public class DetailFragment extends Fragment {
             }
 
 
-            categories.getProductsArrayList().get(position).setPriceAsPerQuantity("" + totalPrice);
 
+     //       categories.getProductsArrayList().get(position).setPriceAsPerQuantity("" + totalPrice);
+foodmakerDishesList.get(position).getDish().setDishPriceAsPerQuantity(" "+totalPrice);
 
             holder.llPlus.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -193,8 +257,10 @@ public class DetailFragment extends Fragment {
 
                         recentPos = position;
                         holder.quantity = holder.quantity + 1;
-                        categories.getProductsArrayList().get(position).setQuantity(holder.quantity);
-                        categories.getProductsArrayList().get(position).setPriceAsPerQuantity("" + holder.quantity * Integer.parseInt(categories.getProductsArrayList().get(position).getPrice()));
+                        foodmakerDishesList.get(position).getDish().setDishQuantity(holder.quantity);
+                     //   categories.getProductsArrayList().get(position).setQuantity(holder.quantity);
+                        foodmakerDishesList.get(position).getDish().setDishPriceAsPerQuantity("" + holder.quantity * foodmakerDishesList.get(position).getDish().getDishSellingPrice());
+                    //    categories.getProductsArrayList().get(position).setPriceAsPerQuantity("" + holder.quantity * Integer.parseInt(categories.getProductsArrayList().get(position).getPrice()));
 
                         holder.quantityTxt.setText("" + holder.quantity);
                     }
@@ -215,9 +281,11 @@ public class DetailFragment extends Fragment {
                         recentPos = position;
 
                         holder.quantity = holder.quantity - 1;
-                        categories.getProductsArrayList().get(position).setQuantity(holder.quantity);
-                        categories.getProductsArrayList().get(position).setPriceAsPerQuantity("" + holder.quantity *
-                                Integer.parseInt(categories.getProductsArrayList().get(position).getPrice()));
+                        foodmakerDishesList.get(position).getDish().setDishQuantity(holder.quantity);
+                //        categories.getProductsArrayList().get(position).setQuantity(holder.quantity);
+                        foodmakerDishesList.get(position).getDish().setDishPriceAsPerQuantity("" + holder.quantity * foodmakerDishesList.get(position).getDish().getDishSellingPrice());
+              //          categories.getProductsArrayList().get(position).setPriceAsPerQuantity("" + holder.quantity *
+                  //              Integer.parseInt(categories.getProductsArrayList().get(position).getPrice()));
 
                         holder.quantityTxt.setText("" + holder.quantity);
 
@@ -234,7 +302,7 @@ public class DetailFragment extends Fragment {
 
         @Override
         public int getItemCount() {
-            return categories.getProductsArrayList().size();
+            return foodmakerDishesList.size();
         }
 
         class MyViewHolder extends RecyclerView.ViewHolder {

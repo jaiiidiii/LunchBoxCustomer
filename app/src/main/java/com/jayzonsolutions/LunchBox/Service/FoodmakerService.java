@@ -21,4 +21,5 @@ public interface FoodmakerService {
 
     @GET("foodmaker_dishes/foodmakersdishes-list-byfoodmakerid")
     Call<List<FoodmakerDishes>> getDishesByFoodmakerId(@Query("foodmakerId") Integer foodmakerId);
+
 }

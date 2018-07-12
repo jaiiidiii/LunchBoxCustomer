@@ -20,6 +20,26 @@ public class Dish {
     @Expose
     private String dishImagePath;
 
+    private Integer dishQuantity =0;
+
+    private String dishPriceAsPerQuantity;
+
+    public String getDishPriceAsPerQuantity() {
+        return dishPriceAsPerQuantity;
+    }
+
+    public void setDishPriceAsPerQuantity(String dishPriceAsPerQuantity) {
+        this.dishPriceAsPerQuantity = dishPriceAsPerQuantity;
+    }
+
+    public Integer getDishQuantity() {
+        return dishQuantity;
+    }
+
+    public void setDishQuantity(Integer dishQuantity) {
+        this.dishQuantity = dishQuantity;
+    }
+
     public Integer getDishId() {
         return dishId;
     }

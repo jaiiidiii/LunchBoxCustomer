@@ -33,7 +33,7 @@ public class signin extends AppCompatActivity {
         setContentView(R.layout.activity_signin);
         sback = findViewById(R.id.sinb);
         login = findViewById(R.id.sin);
-        getFoodmakerList = findViewById(R.id.getFoodmakerList);
+     //   getFoodmakerList = findViewById(R.id.getFoodmakerList);
 
         mAPIService = ApiUtils.getAPIService();
 

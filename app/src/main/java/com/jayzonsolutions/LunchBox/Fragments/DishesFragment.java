@@ -24,9 +24,7 @@ import com.jayzonsolutions.LunchBox.Service.APIService;
 import com.jayzonsolutions.LunchBox.Service.ApiClient;
 import com.jayzonsolutions.LunchBox.Service.ApiInterface;
 import com.jayzonsolutions.LunchBox.Service.FoodmakerService;
-import com.jayzonsolutions.LunchBox.main;
 import com.jayzonsolutions.LunchBox.model.Foodmaker;
-import com.jayzonsolutions.LunchBox.model.Movie;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,8 +34,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class DishesFragment extends Fragment {
-   // List<Movie> movieList;
-    List<Foodmaker> movieList;
+   // List<Movie> foodmakerList;
+    List<Foodmaker> foodmakerList;
     RecyclerView recyclerView;
     RecyclerAdapter recyclerAdapter;
     Context context = getContext();
@@ -62,7 +60,7 @@ public class DishesFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_dishes, container, false);
 
-        movieList = new ArrayList<>();
+        foodmakerList = new ArrayList<>();
         recyclerView = v.findViewById(R.id.recyclerview);
 //        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(context, 1);
@@ -70,27 +68,10 @@ public class DishesFragment extends Fragment {
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(1, dpToPx(), true));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        recyclerAdapter = new RecyclerAdapter(getContext(), movieList);
+        recyclerAdapter = new RecyclerAdapter(getContext(), foodmakerList);
         recyclerView.setAdapter(recyclerAdapter);
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        /*Call<List<Movie>> call = apiService.getMovies();
-
-        call.enqueue(new Callback<List<Movie>>() {
-            @Override
-            public void onResponse(@NonNull Call<List<Movie>> call, @NonNull Response<List<Movie>> response) {
-                movieList = response.body();
-                Log.d("TAG", "Response = " + movieList);
-                recyclerAdapter.setMovieList(movieList);
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<List<Movie>> call, @NonNull Throwable t) {
-                Log.d("TAG", "Response = " + t.toString());
-            }
-        });*/
-
-
 
         mAPIService = ApiUtils.getAPIService();
         foodmakerService = ApiUtils.getFoodmakerService();
@@ -105,9 +86,9 @@ public class DishesFragment extends Fragment {
 
                 }
 */
-                movieList = response.body();
-                Log.d("TAG", "Response = " + movieList);
-                recyclerAdapter.setMovieList(movieList);
+                foodmakerList = response.body();
+                Log.d("TAG", "Response = " + foodmakerList);
+                recyclerAdapter.setMovieList(foodmakerList);
 
             }
 
