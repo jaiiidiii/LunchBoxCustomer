@@ -3,6 +3,7 @@ package com.jayzonsolutions.LunchBox;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.location.SettingInjectorService;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -15,6 +16,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -23,18 +25,32 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlacePicker;
+import com.jayzonsolutions.LunchBox.Service.OrderService;
+import com.jayzonsolutions.LunchBox.model.ApiResponse;
+import com.jayzonsolutions.LunchBox.model.Order;
+import com.jayzonsolutions.LunchBox.model.OrderDish;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class PlaceOrderActivity extends AppCompatActivity implements
         View.OnClickListener,  GoogleApiClient.OnConnectionFailedListener  {
 
-    TextView btnPlacePicker, btnDatePicker, btnTimePicker, txtDate, txtTime;
+    TextView btnPlacePicker, btnDatePicker, btnTimePicker, txtDate, txtTime,btnPlaceOrder;
     private int mYear, mMonth, mDay, mHour, mMinute;
     private GoogleApiClient mGoogleApiClient;
     private int PLACE_PICKER_REQUEST = 1;
     private TextView tvPlaceDetails;
-
+    private OrderService orderService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,12 +60,83 @@ public class PlaceOrderActivity extends AppCompatActivity implements
         btnPlacePicker= findViewById(R.id.place_pick);
         btnDatePicker= findViewById(R.id.btn_date);
         btnTimePicker= findViewById(R.id.btn_time);
+
+        btnPlaceOrder = findViewById(R.id.btn_placeOrder);
+
         txtDate= findViewById(R.id.in_date);
         txtTime= findViewById(R.id.in_time);
 
         btnPlacePicker.setOnClickListener(this);
         btnDatePicker.setOnClickListener(this);
         btnTimePicker.setOnClickListener(this);
+
+        orderService = ApiUtils.getOrderService();
+
+
+        btnPlaceOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String date = txtDate.getText().toString();
+                String time = txtTime.getText().toString();
+                String dtStart = "2010-10-15T09:27:37Z";
+                Date datenew = null;
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+                try {
+                    datenew = format.parse(dtStart);
+                    System.out.println("Dtae ===> "+datenew);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+        Order order = new Order();
+        order.setOrderCustomerId(10);
+        order.setOrderShipmentAddress("Ceaser Tower");
+        order.setOrderDate(datenew);
+
+        order.setOrderDeliverDate(datenew);
+        order.setOrderTotalAmount(102);
+        order.setOrderStatus(1);
+        order.setFoodmakerId(8);
+        List<OrderDish> orderDishes = new ArrayList<>();
+        OrderDish orderDish = new OrderDish();
+        orderDish.setDishId(27);
+        orderDish.setQuantity(2.00);
+
+        OrderDish orderDish1 = new OrderDish();
+        orderDish.setDishId(23);
+        orderDish.setQuantity(5.00);
+        orderDishes.add(orderDish1);
+        order.setOrderdishes(orderDishes);
+
+
+        orderService.placeOrder(order).enqueue(new Callback<ApiResponse>() {
+            @Override
+            public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
+
+                Toast.makeText(PlaceOrderActivity.this,"true json",Toast.LENGTH_LONG).show();
+
+           //     System.out.println(response.body().toString());
+
+
+
+            }
+
+            @Override
+            public void onFailure(Call<ApiResponse> call, Throwable t) {
+                Toast.makeText(PlaceOrderActivity.this,"failed json ",Toast.LENGTH_LONG).show();
+
+            }
+        });
+
+
+
+
+
+            }
+        });
+
+
+
+
 
         initViews();
 
@@ -79,7 +166,8 @@ public class PlaceOrderActivity extends AppCompatActivity implements
                         @Override
                         public void onDateSet(DatePicker view, int year,
                                               int monthOfYear, int dayOfMonth) {
-                            txtDate.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                      //      txtDate.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                            txtDate.setText(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
                         }
                     }, mYear, mMonth, mDay);
             datePickerDialog.show();
