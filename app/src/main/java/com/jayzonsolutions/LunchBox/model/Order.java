@@ -24,10 +24,10 @@ public class Order {
     private String orderShipmentAddress;
     @SerializedName("orderDate")
     @Expose
-    private Date orderDate;
+    private String orderDate;
     @SerializedName("orderDeliverDate")
     @Expose
-    private Date orderDeliverDate;
+    private String orderDeliverDate;
     @SerializedName("orderTotalAmount")
     @Expose
     private Integer orderTotalAmount;
@@ -84,19 +84,19 @@ public class Order {
         this.orderShipmentAddress = orderShipmentAddress;
     }
 
-    public Date getOrderDate() {
+    public String getOrderDate() {
         return orderDate;
     }
 
-    public void setOrderDate(Date orderDate) {
+    public void setOrderDate(String orderDate) {
         this.orderDate = orderDate;
     }
 
-    public Date getOrderDeliverDate() {
+    public String getOrderDeliverDate() {
         return orderDeliverDate;
     }
 
-    public void setOrderDeliverDate(Date orderDeliverDate) {
+    public void setOrderDeliverDate(String orderDeliverDate) {
         this.orderDeliverDate = orderDeliverDate;
     }
 

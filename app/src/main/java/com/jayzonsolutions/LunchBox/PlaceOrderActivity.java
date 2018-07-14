@@ -10,6 +10,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -36,7 +37,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -76,6 +80,75 @@ public class PlaceOrderActivity extends AppCompatActivity implements
         btnPlaceOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Set orderdishesKey = Constant.orderdishes.keySet();
+                Set FoodmakerIdKey = Constant.foodmakerdishes.keySet();
+
+                for (Iterator i = FoodmakerIdKey.iterator(); i.hasNext(); ) {
+                    int foodmakerId = (Integer)i.next();
+                     HashMap<Integer,Double> foodmakerOrderDishes = (HashMap<Integer, Double>) Constant.foodmakerdishes.get(foodmakerId);//                    int foodmakerId =  i.next();
+                    Log.v("foodmaker order" ,"foodakerid ==> "+ foodmakerId+"\norderdishes => "+foodmakerOrderDishes);
+
+                    Order order = new Order(); //create order instant
+                    order.setOrderCustomerId(10);
+                    order.setOrderShipmentAddress("test Ceaser Tower");
+                    order.setOrderDate("2018-07-15");
+
+                    order.setOrderDeliverDate("2018-07-15");
+                    order.setOrderTotalAmount(102);
+                    order.setOrderStatus(1);
+                    order.setFoodmakerId(foodmakerId);
+                    List<OrderDish> orderDishes = new ArrayList<>();
+
+                Set foodmakerOrderDishesKey = foodmakerOrderDishes.keySet();
+                    for (Iterator j = foodmakerOrderDishesKey.iterator(); j.hasNext(); ) {
+                        int orderDishesId = (Integer)j.next();
+                        double dishesQuantity = (double)Constant.orderdishes.get(orderDishesId);
+                        OrderDish orderDish = new OrderDish();
+                        orderDish.setDishId(orderDishesId);
+                        orderDish.setQuantity(dishesQuantity);
+                        orderDishes.add(orderDish);
+                    }
+
+                    order.setOrderdishes(orderDishes);
+
+                    Log.v("order detail ",order.getOrderdishes().toString());
+
+
+                    orderService.placeOrder(order).enqueue(new Callback<ApiResponse>() {
+                        @Override
+                        public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
+
+                            Toast.makeText(PlaceOrderActivity.this,"true json",Toast.LENGTH_LONG).show();
+
+                            //     System.out.println(response.body().toString());
+
+
+
+                        }
+
+                        @Override
+                        public void onFailure(Call<ApiResponse> call, Throwable t) {
+                            Toast.makeText(PlaceOrderActivity.this,"failed json ",Toast.LENGTH_LONG).show();
+
+                        }
+                    });
+
+                }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  /*
                 String date = txtDate.getText().toString();
                 String time = txtTime.getText().toString();
                 String dtStart = "2010-10-15T09:27:37Z";
@@ -128,7 +201,7 @@ public class PlaceOrderActivity extends AppCompatActivity implements
         });
 
 
-
+*/
 
 
             }
