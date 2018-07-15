@@ -15,6 +15,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -110,6 +111,7 @@ public class PlaceOrderActivity extends AppCompatActivity implements
             try {
                 startActivityForResult(builder.build(PlaceOrderActivity.this), PLACE_PICKER_REQUEST);
             } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e) {
+                Toast.makeText(this, "error=" + e.getMessage(), Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
             }
         }
