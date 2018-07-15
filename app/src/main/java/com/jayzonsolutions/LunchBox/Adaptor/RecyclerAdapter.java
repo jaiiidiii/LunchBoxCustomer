@@ -79,11 +79,13 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Myview
                 diskCacheStrategy(DiskCacheStrategy.ALL)).
                 into(holder.FoodMakerImage);*/
 
-        Glide.with(context).load(ApiUtils.BASE_URL+"images/es2.jpg").
+
+        Glide.with(context).load(ApiUtils.BASE_URL+(movieList.get(position).getFoodmakerImagePath().substring(21))).
                 apply(RequestOptions.
                         centerCropTransform().fitCenter().
                         diskCacheStrategy(DiskCacheStrategy.ALL)).
                 into(holder.FoodMakerImage);
+
         holder.setItemClickListener(new ItemClickListener() {
             @Override
             public void onItemClick(View v, int pos) {
