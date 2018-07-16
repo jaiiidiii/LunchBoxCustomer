@@ -103,7 +103,7 @@ public class Foodmaker {
         this.foodmakerAccessType = foodmakerAccessType;
     }
 
-    public Object getFoodmakerImagePath() {
+    public String getFoodmakerImagePath() {
         return foodmakerImagePath;
     }
 
