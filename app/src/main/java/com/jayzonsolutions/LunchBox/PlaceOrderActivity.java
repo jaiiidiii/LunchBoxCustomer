@@ -271,6 +271,7 @@ public class PlaceOrderActivity extends AppCompatActivity implements
             try {
                 startActivityForResult(builder.build(PlaceOrderActivity.this), PLACE_PICKER_REQUEST);
             } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e) {
+                Toast.makeText(this, "error=" + e.getMessage(), Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
             }
         }
