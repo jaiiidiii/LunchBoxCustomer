@@ -3,11 +3,12 @@ package com.jayzonsolutions.LunchBox;
 import com.jayzonsolutions.LunchBox.Service.APIService;
 import com.jayzonsolutions.LunchBox.Service.CustomerService;
 import com.jayzonsolutions.LunchBox.Service.FoodmakerService;
+import com.jayzonsolutions.LunchBox.Service.OrderService;
 
 public class ApiUtils {
 
     // public static final String BASE_URL = "http://192.168.0.106:8080/";
-    public static final String BASE_URL = "http://192.168.0.104:8080/";
+    public static final String BASE_URL = "http://192.168.0.108:8080/";
 
     private ApiUtils() {
     }
@@ -23,5 +24,9 @@ public class ApiUtils {
 
      public static FoodmakerService getFoodmakerService() {
         return RetrofitClient.getClient(BASE_URL).create(FoodmakerService.class);
+    }
+
+    public static OrderService getOrderService(){
+        return  RetrofitClient.getClient(BASE_URL).create(OrderService.class);
     }
 }
