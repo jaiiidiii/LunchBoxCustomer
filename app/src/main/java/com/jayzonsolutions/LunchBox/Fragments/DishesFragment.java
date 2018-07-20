@@ -105,43 +105,16 @@ public class DishesFragment extends Fragment {
     public void onResume() {
 
         super.onResume();
-        foodmakerService.getFoodmakerListNearBy(6,24.838756,67.080911).enqueue(new Callback<List<Foodmaker>>() {
-            @Override
-         public void onResponse(@NonNull Call<List<Foodmaker>> call, @NonNull Response<List<Foodmaker>> response) {
-
-
-            foodmakerList = response.body();
-                Log.d("TAG", "Response = " + foodmakerList);
-                recyclerAdapter.setMovieList(foodmakerList);
-
-        }
-
-        @Override
-        public void onFailure(@NonNull Call<List<Foodmaker>> call, @NonNull Throwable t) {
-            Toast.makeText(context, "failed ", Toast.LENGTH_LONG).show();
-
-        }
-    });
-
-
-
-
-
-
-
-
-
-/* // working code
         foodmakerService.getFoodmakerList().enqueue(new Callback<List<Foodmaker>>() {
             @Override
             public void onResponse(@NonNull Call<List<Foodmaker>> call, @NonNull Response<List<Foodmaker>> response) {
-//                Toast.makeText(main.this, "success" + response.body().toString(), Toast.LENGTH_LONG).show();
-//                for (Foodmaker foodmaker : response.body()) {
-//                    System.out.println(foodmaker.getFoodmakerName());
-//
-//
-//                }
+              /*  Toast.makeText(main.this, "success" + response.body().toString(), Toast.LENGTH_LONG).show();
+                for (Foodmaker foodmaker : response.body()) {
+                    System.out.println(foodmaker.getFoodmakerName());
 
+
+                }
+*/
                 foodmakerList = response.body();
                 Log.d("TAG", "Response = " + foodmakerList);
                 recyclerAdapter.setMovieList(foodmakerList);
@@ -154,7 +127,7 @@ public class DishesFragment extends Fragment {
 
             }
         });
-*/
+
         // super.onResume();
 
     }
@@ -242,8 +215,6 @@ public class DishesFragment extends Fragment {
             if (latitude != 0.0 && longitude != 0.0) {
 
                 Toast.makeText(getActivity(), "Your Location is - \nLat: " + latitude + "\nLong: " + longitude, Toast.LENGTH_LONG).show();
-                Log.v("Lat",""+latitude);
-                Log.v("Long",""+longitude);
                 // Intent myIntent = new Intent(WorkDone.this,
                 // CameraPhotoCapture.class);
                 // myIntent.putExtra("workdone", Work.toString());
@@ -311,10 +282,4 @@ public class DishesFragment extends Fragment {
             }
         }
     }
-
-
-
-
-
-
 }

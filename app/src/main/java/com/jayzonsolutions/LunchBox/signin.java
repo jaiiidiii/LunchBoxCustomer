@@ -9,10 +9,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.jayzonsolutions.LunchBox.Service.APIService;
-import com.jayzonsolutions.LunchBox.Service.CustomerService;
 import com.jayzonsolutions.LunchBox.Service.FoodmakerService;
 import com.jayzonsolutions.LunchBox.model.ApiResponse;
-import com.jayzonsolutions.LunchBox.model.Customer;
 
 import customfonts.MyEditText;
 import customfonts.MyTextView;
@@ -26,8 +24,8 @@ public class signin extends AppCompatActivity {
     ImageView sback;
     MyTextView login;
     MyTextView getFoodmakerList;
-    private Customer customer;
-    private CustomerService customerService;
+    private APIService mAPIService;
+    private FoodmakerService foodmakerService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,39 +35,37 @@ public class signin extends AppCompatActivity {
         login = findViewById(R.id.sin);
      //   getFoodmakerList = findViewById(R.id.getFoodmakerList);
 
+        mAPIService = ApiUtils.getAPIService();
 
-
-        customerService = ApiUtils.getCustomerService();
+        foodmakerService = ApiUtils.getFoodmakerService();
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                customerService.customerLogin("sohail@gmail.com","123456").enqueue(new Callback<Customer>() {
-                    @Override
-                    public void onResponse(@NonNull Call<Customer> call, @NonNull Response<Customer> response) {
-                       if(response.body() != null){
 
-                        customer =   response.body();
-                        Constant.userId = customer.getCustomerId();
-
-                        Intent intent = new Intent(signin.this, customerActivity.class);
-                        startActivity(intent);
-                       }
-                       // Toast.makeText(signin.this, "success" + response.body().getStatus(), Toast.LENGTH_LONG).show();
-                    }
-
-                    @Override
-                    public void onFailure(@NonNull Call<Customer> call, @NonNull Throwable t) {
-                        Toast.makeText(signin.this, "failed ", Toast.LENGTH_LONG).show();
-
-                    }
-                });
             /*    //  Toast.makeText(signin.this,"clicked",Toast.LENGTH_LONG).show();
+                //api call
+                if (validate()) {
+                    mAPIService.savePost("sohail@gmail.com", "123456").enqueue(new Callback<ApiResponse>() {
+                        @Override
+                        public void onResponse(@NonNull Call<ApiResponse> call, @NonNull Response<ApiResponse> response) {
 
+                            Intent intent = new Intent(signin.this, customerActivity.class);
+                            startActivity(intent);
+                            Toast.makeText(signin.this, "success" + response.body().getStatus(), Toast.LENGTH_LONG).show();
+                        }
+
+                        @Override
+                        public void onFailure(@NonNull Call<ApiResponse> call, @NonNull Throwable t) {
+                            Toast.makeText(signin.this, "failed ", Toast.LENGTH_LONG).show();
+
+                        }
+                    });
+                }
                 //api call end*/
 
-//                Intent intent = new Intent(signin.this, customerActivity.class);
-//                startActivity(intent);
+                Intent intent = new Intent(signin.this, customerActivity.class);
+                startActivity(intent);
 
 
             }
