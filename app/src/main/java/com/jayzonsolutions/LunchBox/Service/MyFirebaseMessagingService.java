@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
@@ -32,7 +33,28 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private NotificationUtils notificationUtils;
 
+    @Override
+    public void onNewToken(String s) {
+        super.onNewToken(s);
+        Log.d("NEW_TOKEN", s);
+        // Saving reg id to shared preferences
+        storeRegIdInPref(s);
+        //   gb.setRegistrationId(s);
+        // sending reg id to your server
+        //  sendRegistrationToServer(s);
 
+        // Notify UI that registration has completed, so the progress indicator can be hidden.
+        Intent registrationComplete = new Intent(Config.REGISTRATION_COMPLETE);
+        registrationComplete.putExtra("token", s);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(registrationComplete);
+    }
+
+    private void storeRegIdInPref(String token) {
+        SharedPreferences pref = getApplicationContext().getSharedPreferences(Config.SHARED_PREF, 0);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString("regId", token);
+        editor.commit();
+    }
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         Log.e(TAG, "From: " + remoteMessage.getFrom());

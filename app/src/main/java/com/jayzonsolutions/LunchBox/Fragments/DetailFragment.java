@@ -1,6 +1,6 @@
 package com.jayzonsolutions.LunchBox.Fragments;
 
-import android.app.Activity;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -11,7 +11,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,34 +48,15 @@ import retrofit2.Response;
 
 public class DetailFragment extends Fragment {
     public static Integer id;
-    Context context = getContext();
 
     Animation startAnimation;
-    private LinearLayout linear_progressbar;
-
-    private Toolbar toolbar;
-    private TextView toolBarTxt;
-
+    List<FoodmakerDishes> foodmakerDishesList;
     private RecyclerView recyclerView;
     private RecycleAdapter_AddProduct mAdapter;
-    private int status_code;
-    private String token, totalPriceOfProducts;
     private FoodmakerService foodmakerService;
-    List<FoodmakerDishes> foodmakerDishesList;
-
     private Map<Integer,Double> orderdishes;
-
-
-//    private ProductArrayList productsArrayList;
-
-    private TextView quantityOfTotalProduct, priceOfTotalProduct, next;
     private Categories categories;
     private ImageView btn;
-    private int[] IMAGES = {R.drawable.biryani, R.drawable.koorma, R.drawable.pulao, R.drawable.chicken_karahi, R.drawable.salad};
-    private String[] NamES = {"Biryani", "koorma", "Pulao", "Chicken_karahi", "Salad"};
-    private String[] PRICE = {"150", "132", "101", "93", "85"};
-
-
     private View view;
 
 

@@ -70,7 +70,7 @@ public class GlobalVariables {
         Latitude = 0;
         Longitude = 0;
         UserName = null;
-        RegistrationId = null;
+
     }
 
 }

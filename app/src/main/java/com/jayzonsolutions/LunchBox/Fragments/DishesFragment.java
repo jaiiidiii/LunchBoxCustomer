@@ -2,7 +2,9 @@ package com.jayzonsolutions.LunchBox.Fragments;
 
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Rect;
@@ -14,6 +16,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -30,6 +33,7 @@ import com.jayzonsolutions.LunchBox.Service.ApiClient;
 import com.jayzonsolutions.LunchBox.Service.ApiInterface;
 import com.jayzonsolutions.LunchBox.Service.FoodmakerService;
 import com.jayzonsolutions.LunchBox.Service.GPSTracker;
+import com.jayzonsolutions.LunchBox.app.Config;
 import com.jayzonsolutions.LunchBox.model.Foodmaker;
 
 import java.util.ArrayList;
@@ -39,13 +43,15 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static android.os.Build.ID;
+
 public class DishesFragment extends Fragment {
     final GlobalVariables g;
     // List<Movie> foodmakerList;
     List<Foodmaker> foodmakerList;
     RecyclerView recyclerView;
     RecyclerAdapter recyclerAdapter;
-    Context context = getContext();
+    Context context = getActivity();
     GPSTracker gps;
     double latitude;
     double longitude;
@@ -75,8 +81,8 @@ public class DishesFragment extends Fragment {
 
         //  final GlobalVariables g = GlobalVariables.GetInstance();
         g.ResetVariables();
-
-
+        // Toast.makeText(getActivity(), ""+g.getRegistrationId(), Toast.LENGTH_SHORT).show();
+        displayFirebaseRegId();
         foodmakerList = new ArrayList<>();
         recyclerView = v.findViewById(R.id.recyclerview);
 //        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -195,6 +201,7 @@ public class DishesFragment extends Fragment {
             //If the user has denied the permission previously your code will come to this block
             //Here you can explain why you need this permission
             //Explain here why you need this permission
+            Toast.makeText(getActivity(), "You just denied the permission", Toast.LENGTH_SHORT).show();
         }
 
         //And finally ask for the permission
@@ -277,6 +284,23 @@ public class DishesFragment extends Fragment {
         return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 0, r.getDisplayMetrics()));
     }
 
+    // Fetches reg id from shared preferences
+    // and displays on the screen
+    private void displayFirebaseRegId() {
+        SharedPreferences pref = getActivity().getApplicationContext().getSharedPreferences(Config.SHARED_PREF, 0);
+        String regId = pref.getString("regId", null);
+
+        Log.e("ID", "Firebase reg id: " + regId);
+
+        if (!TextUtils.isEmpty(regId)) {
+            Toast.makeText(getActivity(), "Firebase Reg Id: " + regId, Toast.LENGTH_SHORT).show();
+            g.setRegistrationId(regId);
+        }   //txtRegId.setText("Firebase Reg Id: " + regId);
+        else
+//            txtRegId.setText("Firebase Reg Id is not received yet!");
+            Toast.makeText(getActivity(), "Firebase Reg Id is not received yet!", Toast.LENGTH_SHORT).show();
+    }
+
     public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
 
         private int spanCount;
@@ -311,8 +335,6 @@ public class DishesFragment extends Fragment {
             }
         }
     }
-
-
 
 
 

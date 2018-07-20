@@ -102,7 +102,7 @@ public class PlaceOrderActivity extends AppCompatActivity implements
                     Set foodmakerOrderDishesKey = foodmakerOrderDishes.keySet();
                     for (Iterator j = foodmakerOrderDishesKey.iterator(); j.hasNext(); ) {
                         int orderDishesId = (Integer)j.next();
-                        double dishesQuantity = (double)Constant.orderdishes.get(orderDishesId);
+                        double dishesQuantity = Constant.orderdishes.get(orderDishesId);
                         OrderDish orderDish = new OrderDish();
                         orderDish.setDishId(orderDishesId);
                         orderDish.setQuantity(dishesQuantity);
@@ -118,7 +118,7 @@ public class PlaceOrderActivity extends AppCompatActivity implements
                         @Override
                         public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
 
-                            Toast.makeText(PlaceOrderActivity.this,"true json",Toast.LENGTH_LONG).show();
+                            Toast.makeText(PlaceOrderActivity.this, "Order Placed Successfully", Toast.LENGTH_LONG).show();
 
                             //     System.out.println(response.body().toString());
 
