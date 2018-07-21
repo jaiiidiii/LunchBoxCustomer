@@ -51,7 +51,7 @@ public class DishesFragment extends Fragment {
     List<Foodmaker> foodmakerList;
     RecyclerView recyclerView;
     RecyclerAdapter recyclerAdapter;
-    Context context = getActivity();
+    Context context = getContext();
     GPSTracker gps;
     double latitude;
     double longitude;
@@ -111,21 +111,30 @@ public class DishesFragment extends Fragment {
     public void onResume() {
 
         super.onResume();
-        foodmakerService.getFoodmakerListNearBy(6,24.838756,67.080911).enqueue(new Callback<List<Foodmaker>>() {
+
+        context = getActivity();
+
+        GPSTracker gpsTracker = new GPSTracker(context);
+        foodmakerService.getFoodmakerListNearBy(gpsTracker.getLatitude(),gpsTracker.getLongitude()).enqueue(new Callback<List<Foodmaker>>() {
             @Override
             public void onResponse(@NonNull Call<List<Foodmaker>> call, @NonNull Response<List<Foodmaker>> response) {
 
-
-                foodmakerList = response.body();
-                Log.d("TAG", "Response = " + foodmakerList);
-                recyclerAdapter.setMovieList(foodmakerList);
+                if(foodmakerList.size() <= 0)
+                {
+                    foodmakerList = response.body();
+                    Log.d("TAG", "Response = " + foodmakerList);
+                    recyclerAdapter.setMovieList(foodmakerList);
+                }
+                else
+                {
+                    Toast.makeText(context, "naaaaa", Toast.LENGTH_LONG).show();
+                }
 
             }
 
             @Override
             public void onFailure(@NonNull Call<List<Foodmaker>> call, @NonNull Throwable t) {
-                Toast.makeText(context, "failed ", Toast.LENGTH_LONG).show();
-
+                Toast.makeText(context, "no foodmaker available in your area", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -162,6 +171,8 @@ public class DishesFragment extends Fragment {
         });
 */
         // super.onResume();
+
+
 
     }
 

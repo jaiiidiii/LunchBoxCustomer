@@ -1,6 +1,7 @@
 package com.jayzonsolutions.LunchBox.Service;
 
 import com.jayzonsolutions.LunchBox.model.ApiResponse;
+import com.jayzonsolutions.LunchBox.model.Customer;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -11,5 +12,6 @@ public interface APIService {
 
     @POST("customer/login")
     @FormUrlEncoded
-    Call<ApiResponse> savePost(@Field("customerEmail") String customerEmail, @Field("customerPassword") String customerPassword);
+    Call<Customer> savePost(@Field("customerEmail") String customerEmail, @Field("customerPassword") String customerPassword
+    , @Field("token") String token);
 }

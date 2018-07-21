@@ -28,6 +28,9 @@ public class Customer {
     @SerializedName("customerAddressId")
     @Expose
     private Address address;
+    @SerializedName("customer_RegToken")
+    @Expose
+    private String customerRegToken;
 
     public Customer(String customerName, String customerEmail, String customerPassword, String customerNic, String customerPhoneNumber, String customerAccessType, Address address) {
         this.customerName = customerName;
@@ -93,6 +96,14 @@ public class Customer {
 
     public void setCustomerAddressId(Address addressId) {
         this.address = addressId;
+    }
+
+    public String getcustomerRegToken() {
+        return customerRegToken;
+    }
+
+    public void setFoodmakerRegToken(String customerRegToken) {
+        this.customerRegToken = customerRegToken;
     }
 
 }
