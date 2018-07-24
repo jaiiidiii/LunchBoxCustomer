@@ -27,16 +27,21 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.jayzonsolutions.LunchBox.ApiUtils;
+import com.jayzonsolutions.LunchBox.Constant;
 import com.jayzonsolutions.LunchBox.PlaceOrderActivity;
 import com.jayzonsolutions.LunchBox.R;
 import com.jayzonsolutions.LunchBox.Service.FoodmakerService;
+import com.jayzonsolutions.LunchBox.model.Cart;
+import com.jayzonsolutions.LunchBox.model.CartItem;
 import com.jayzonsolutions.LunchBox.model.Categories;
 import com.jayzonsolutions.LunchBox.model.FoodmakerDishes;
 import com.jayzonsolutions.LunchBox.model.Products;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -60,6 +65,8 @@ public class DetailFragment extends Fragment {
     private FoodmakerService foodmakerService;
     List<FoodmakerDishes> foodmakerDishesList;
 
+    private Map<Integer,Double> orderdishes;
+    private Map<Integer,CartItem> cartItemMap;
 //    private ProductArrayList productsArrayList;
 
     private TextView quantityOfTotalProduct, priceOfTotalProduct, next;
@@ -84,6 +91,10 @@ public class DetailFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        //create this screen orderDishes list
+        orderdishes = new HashMap<>();
+        cartItemMap = new HashMap<>();
+
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_detail, container, false);
 
@@ -251,9 +262,11 @@ foodmakerDishesList.get(position).getDish().setDishPriceAsPerQuantity(" "+totalP
             holder.llPlus.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+            Log.e("dish"," => "+foodmakerDishesList.get(position).getDish().getDishId());
+                    Log.e("dish"," => "+foodmakerDishesList.get(position).getFoodmakerDishesId());
 
                     if (holder.quantity < 10) {
-
+                        int foodmakerdishId = foodmakerDishesList.get(position).getFoodmakerDishesId();
 
                         recentPos = position;
                         holder.quantity = holder.quantity + 1;
@@ -263,6 +276,23 @@ foodmakerDishesList.get(position).getDish().setDishPriceAsPerQuantity(" "+totalP
                     //    categories.getProductsArrayList().get(position).setPriceAsPerQuantity("" + holder.quantity * Integer.parseInt(categories.getProductsArrayList().get(position).getPrice()));
 
                         holder.quantityTxt.setText("" + holder.quantity);
+
+                            double quan = (double) holder.quantity;
+                          orderdishes.put(foodmakerdishId,quan);
+                          Constant.orderdishes.put(foodmakerdishId,quan);
+                          int foodmakerId = foodmakerDishesList.get(position).getFoodmakerid();
+                          Constant.foodmakerdishes.put(foodmakerId,orderdishes);
+
+
+                        /**
+                         * cart item
+                         */
+
+
+                        cartItemMap.put(foodmakerdishId,new CartItem(foodmakerdishId,foodmakerDishesList.get(position),quan));
+                        Cart.orderdishes.put(foodmakerdishId,new CartItem(foodmakerdishId,foodmakerDishesList.get(position),quan));
+                        Cart.foodmakerdishes.put(foodmakerId,cartItemMap);
+
                     }
 
 

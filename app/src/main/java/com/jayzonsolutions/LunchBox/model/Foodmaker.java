@@ -46,6 +46,9 @@ public class Foodmaker {
     @SerializedName("averageRatings")
     @Expose
     private Double averageRatings;
+    @SerializedName("foodaker_RegToken")
+    @Expose
+    private String foodmakerRegToken;
 
     public Integer getFoodmakerId() {
         return foodmakerId;
@@ -157,6 +160,14 @@ public class Foodmaker {
 
     public void setAverageRatings(Double averageRatings) {
         this.averageRatings = averageRatings;
+    }
+
+    public String getFoodmakerRegToken() {
+        return foodmakerRegToken;
+    }
+
+    public void setFoodmakerRegToken(String foodmakerRegToken) {
+        this.foodmakerRegToken = foodmakerRegToken;
     }
 
 }

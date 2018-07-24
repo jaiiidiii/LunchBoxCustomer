@@ -62,7 +62,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Myview
     public void onBindViewHolder(@NonNull final RecyclerAdapter.MyviewHolder holder, @SuppressLint("RecyclerView") final int position) {
         holder.FoodMakerName.setText(movieList.get(position).getFoodmakerName());
         holder.ProductPrice.setText(movieList.get(position).getFoodmakerPhoneNumber());
-        number = new BigDecimal(movieList.get(position).getAverageRatings());
+//        number = new BigDecimal(movieList.get(position).getAverageRatings());
+        number = new BigDecimal(3.5);
         if (number.equals(null))
         {
             number = BigDecimal.valueOf(0);

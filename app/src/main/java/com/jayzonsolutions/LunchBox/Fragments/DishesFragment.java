@@ -105,16 +105,46 @@ public class DishesFragment extends Fragment {
     public void onResume() {
 
         super.onResume();
-        foodmakerService.getFoodmakerList().enqueue(new Callback<List<Foodmaker>>() {
+        context = getActivity();
+
+        GPSTracker gpsTracker = new GPSTracker(context);
+        foodmakerService.getFoodmakerListNearBy(gpsTracker.getLatitude(),gpsTracker.getLongitude()).enqueue(new Callback<List<Foodmaker>>() {
             @Override
             public void onResponse(@NonNull Call<List<Foodmaker>> call, @NonNull Response<List<Foodmaker>> response) {
-              /*  Toast.makeText(main.this, "success" + response.body().toString(), Toast.LENGTH_LONG).show();
+
+                if(foodmakerList.size() <= 0)
+                {
+                    foodmakerList = response.body();
+                    Log.d("TAG", "Response = " + foodmakerList);
+                    recyclerAdapter.setMovieList(foodmakerList);
+                }
+                else
+                {
+                    Toast.makeText(context, "naaaaa", Toast.LENGTH_LONG).show();
+                }
+
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<List<Foodmaker>> call, @NonNull Throwable t) {
+                Toast.makeText(context, "no foodmaker available in your area", Toast.LENGTH_LONG).show();
+            }
+        });
+
+
+
+
+
+        /*foodmakerService.getFoodmakerList().enqueue(new Callback<List<Foodmaker>>() {
+            @Override
+            public void onResponse(@NonNull Call<List<Foodmaker>> call, @NonNull Response<List<Foodmaker>> response) {
+              *//*  Toast.makeText(main.this, "success" + response.body().toString(), Toast.LENGTH_LONG).show();
                 for (Foodmaker foodmaker : response.body()) {
                     System.out.println(foodmaker.getFoodmakerName());
 
 
                 }
-*/
+*//*
                 foodmakerList = response.body();
                 Log.d("TAG", "Response = " + foodmakerList);
                 recyclerAdapter.setMovieList(foodmakerList);
@@ -126,7 +156,7 @@ public class DishesFragment extends Fragment {
                 Toast.makeText(context, "failed ", Toast.LENGTH_LONG).show();
 
             }
-        });
+        });*/
 
         // super.onResume();
 

@@ -1,16 +1,20 @@
 package com.jayzonsolutions.LunchBox;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.jayzonsolutions.LunchBox.Service.APIService;
 import com.jayzonsolutions.LunchBox.Service.FoodmakerService;
-import com.jayzonsolutions.LunchBox.model.ApiResponse;
+import com.jayzonsolutions.LunchBox.app.Config;
+import com.jayzonsolutions.LunchBox.model.Customer;
 
 import customfonts.MyEditText;
 import customfonts.MyTextView;
@@ -24,6 +28,7 @@ public class signin extends AppCompatActivity {
     ImageView sback;
     MyTextView login;
     MyTextView getFoodmakerList;
+    String DeviceID = "";
     private APIService mAPIService;
     private FoodmakerService foodmakerService;
 
@@ -33,36 +38,35 @@ public class signin extends AppCompatActivity {
         setContentView(R.layout.activity_signin);
         sback = findViewById(R.id.sinb);
         login = findViewById(R.id.sin);
-     //   getFoodmakerList = findViewById(R.id.getFoodmakerList);
+        //   getFoodmakerList = findViewById(R.id.getFoodmakerList);
 
         mAPIService = ApiUtils.getAPIService();
 
         foodmakerService = ApiUtils.getFoodmakerService();
-
+        displayFirebaseRegId();
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-            /*    //  Toast.makeText(signin.this,"clicked",Toast.LENGTH_LONG).show();
+                //  Toast.makeText(signin.this,"clicked",Toast.LENGTH_LONG).show();
                 //api call
-                if (validate()) {
-                    mAPIService.savePost("sohail@gmail.com", "123456").enqueue(new Callback<ApiResponse>() {
-                        @Override
-                        public void onResponse(@NonNull Call<ApiResponse> call, @NonNull Response<ApiResponse> response) {
+                //if (validate()) {
+                mAPIService.savePost("sohail@gmail.com", "123456",DeviceID).enqueue(new Callback<Customer>() {
+                    @Override
+                    public void onResponse(@NonNull Call<Customer> call, @NonNull Response<Customer> response) {
+                        Intent intent = new Intent(signin.this, customerActivity.class);
+                        startActivity(intent);
+                        //   Toast.makeText(signin.this, "success", Toast.LENGTH_LONG).show();
+                    }
+                    @Override
+                    public void onFailure(@NonNull Call<Customer> call, @NonNull Throwable t) {
+                        Toast.makeText(signin.this, "failed ", Toast.LENGTH_LONG).show();
+                    }
+                });
 
-                            Intent intent = new Intent(signin.this, customerActivity.class);
-                            startActivity(intent);
-                            Toast.makeText(signin.this, "success" + response.body().getStatus(), Toast.LENGTH_LONG).show();
-                        }
 
-                        @Override
-                        public void onFailure(@NonNull Call<ApiResponse> call, @NonNull Throwable t) {
-                            Toast.makeText(signin.this, "failed ", Toast.LENGTH_LONG).show();
-
-                        }
-                    });
-                }
-                //api call end*/
+                //}
+                //api call end
 
                 Intent intent = new Intent(signin.this, customerActivity.class);
                 startActivity(intent);
@@ -99,5 +103,19 @@ public class signin extends AppCompatActivity {
         return true;
     }
 
+    // Fetches reg id from shared preferences
+    // and displays on the screen
+    private void displayFirebaseRegId() {
+        SharedPreferences pref = getApplicationContext().getSharedPreferences(Config.SHARED_PREF, 0);
+        String regId = pref.getString("regId", null);
+
+        Log.e("DeviceID", "Firebase reg id: " + regId);
+
+        if (!TextUtils.isEmpty(regId)) {
+            //Toast.makeText(this, "Firebase Reg Id: " + regId, Toast.LENGTH_SHORT).show();
+            DeviceID = regId;
+        } else{}
+        //Toast.makeText(this, "Firebase Reg Id is not received yet!", Toast.LENGTH_SHORT).show();
+    }
 
 }

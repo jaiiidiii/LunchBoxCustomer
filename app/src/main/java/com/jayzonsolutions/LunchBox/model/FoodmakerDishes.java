@@ -70,7 +70,7 @@ public class FoodmakerDishes {
         this.imagepath = imagepath;
     }
 
-    public Object getPrice() {
+    public Double getPrice() {
         return price;
     }
 
