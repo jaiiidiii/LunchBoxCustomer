@@ -28,6 +28,8 @@ import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.jayzonsolutions.LunchBox.Service.OrderService;
 import com.jayzonsolutions.LunchBox.model.ApiResponse;
+import com.jayzonsolutions.LunchBox.model.Cart;
+import com.jayzonsolutions.LunchBox.model.CartItem;
 import com.jayzonsolutions.LunchBox.model.Order;
 import com.jayzonsolutions.LunchBox.model.OrderDish;
 
@@ -49,7 +51,7 @@ import retrofit2.Response;
 public class PlaceOrderActivity extends AppCompatActivity implements
         View.OnClickListener,  GoogleApiClient.OnConnectionFailedListener  {
 
-    TextView btnPlacePicker, btnDatePicker, btnTimePicker, txtDate, txtTime,btnPlaceOrder;
+    TextView btnPlacePicker, btnDatePicker, btnTimePicker, txtDate, txtTime,btnPlaceOrder,placeDetails;;
     private int mYear, mMonth, mDay, mHour, mMinute;
     private GoogleApiClient mGoogleApiClient;
     private int PLACE_PICKER_REQUEST = 1;
@@ -64,6 +66,8 @@ public class PlaceOrderActivity extends AppCompatActivity implements
         btnPlacePicker= findViewById(R.id.place_pick);
         btnDatePicker= findViewById(R.id.btn_date);
         btnTimePicker= findViewById(R.id.btn_time);
+        placeDetails = findViewById(R.id.placeDetails);
+
 
         btnPlaceOrder = findViewById(R.id.btn_placeOrder);
 
@@ -80,36 +84,49 @@ public class PlaceOrderActivity extends AppCompatActivity implements
         btnPlaceOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Set orderdishesKey = Constant.orderdishes.keySet();
-                Set FoodmakerIdKey = Constant.foodmakerdishes.keySet();
-
-                for (Iterator i = FoodmakerIdKey.iterator(); i.hasNext(); ) {
+                /**
+                 * only for testing
+                 * start
+                 */
+                Double totalPrice = 0.00;
+                Set orderdishesKey1 = Cart.orderdishes.keySet();
+                Set FoodmakerIdKey1 = Cart.foodmakerdishes.keySet();
+                for (Iterator i = FoodmakerIdKey1.iterator(); i.hasNext(); ) {
                     int foodmakerId = (Integer)i.next();
-                    HashMap<Integer,Double> foodmakerOrderDishes = (HashMap<Integer, Double>) Constant.foodmakerdishes.get(foodmakerId);//                    int foodmakerId =  i.next();
-                    Log.v("foodmaker order" ,"foodakerid ==> "+ foodmakerId+"\norderdishes => "+foodmakerOrderDishes);
+                    HashMap<Integer,CartItem> foodmakerOrderDishes = (HashMap<Integer,CartItem>) Cart.foodmakerdishes.get(foodmakerId);//                    int foodmakerId =  i.next();
 
+                    Log.v("foodmaker order" ,"foodakerid ==> "+ foodmakerId+"\norderdishes => "+foodmakerOrderDishes);
                     Order order = new Order(); //create order instant
                     order.setOrderCustomerId(10);
-                    order.setOrderShipmentAddress("test Ceaser Tower");
+                    order.setOrderShipmentAddress(placeDetails.getText().toString());
                     order.setOrderDate(txtDate.getText().toString());
 
                     order.setOrderDeliverDate(txtDate.getText().toString());
-                    order.setOrderTotalAmount(102);
+
                     order.setOrderStatus(1);
                     order.setFoodmakerId(foodmakerId);
                     List<OrderDish> orderDishes = new ArrayList<>();
 
-                    Set foodmakerOrderDishesKey = foodmakerOrderDishes.keySet();
-                    for (Iterator j = foodmakerOrderDishesKey.iterator(); j.hasNext(); ) {
+
+
+                    Set foodmakerOrderDishesKey1 = foodmakerOrderDishes.keySet();
+                    for (Iterator j = foodmakerOrderDishesKey1.iterator(); j.hasNext(); ) {
                         int orderDishesId = (Integer)j.next();
-                        double dishesQuantity = Constant.orderdishes.get(orderDishesId);
+                        CartItem cartItem = (CartItem) Cart.orderdishes.get(orderDishesId);
+                        totalPrice += cartItem.getQuantity()*cartItem.getFoodmakerDishes().getPrice();
+
                         OrderDish orderDish = new OrderDish();
                         orderDish.setDishId(orderDishesId);
-                        orderDish.setQuantity(dishesQuantity);
+                        orderDish.setQuantity(cartItem.getQuantity());
                         orderDishes.add(orderDish);
-                    }
 
+                        Log.v("cart item",cartItem.toString());
+                    }
+                    order.setOrderTotalAmount(totalPrice);
                     order.setOrderdishes(orderDishes);
+
+
+
 
                     Log.v("order detail ",order.getOrderdishes().toString());
 
@@ -118,7 +135,7 @@ public class PlaceOrderActivity extends AppCompatActivity implements
                         @Override
                         public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
 
-                            Toast.makeText(PlaceOrderActivity.this, "Order Placed Successfully", Toast.LENGTH_LONG).show();
+                            Toast.makeText(PlaceOrderActivity.this,"true json",Toast.LENGTH_LONG).show();
 
                             //     System.out.println(response.body().toString());
 
@@ -128,13 +145,16 @@ public class PlaceOrderActivity extends AppCompatActivity implements
 
                         @Override
                         public void onFailure(Call<ApiResponse> call, Throwable t) {
-                            Toast.makeText(PlaceOrderActivity.this,"failed json ",Toast.LENGTH_LONG).show();
+                            Toast.makeText(PlaceOrderActivity.this,"Successfully placed",Toast.LENGTH_LONG).show();
 
                         }
                     });
 
                 }
 
+                /***
+                 * end
+                 */
 
 
 
@@ -202,6 +222,9 @@ public class PlaceOrderActivity extends AppCompatActivity implements
 
 
 */
+
+
+
 
 
             }
@@ -310,7 +333,7 @@ public class PlaceOrderActivity extends AppCompatActivity implements
                 String latitude = String.valueOf(place.getLatLng().latitude);
                 String longitude = String.valueOf(place.getLatLng().longitude);
                 String address = String.format("%s", place.getAddress());
-                stBuilder.append("Name: ");
+            /*    stBuilder.append("Name: ");
                 stBuilder.append(placename);
                 stBuilder.append("\n");
                 stBuilder.append("Latitude: ");
@@ -319,7 +342,7 @@ public class PlaceOrderActivity extends AppCompatActivity implements
                 stBuilder.append("Logitude: ");
                 stBuilder.append(longitude);
                 stBuilder.append("\n");
-                stBuilder.append("Address: ");
+                stBuilder.append("Address: ");*/
                 stBuilder.append(address);
                 tvPlaceDetails.setText(stBuilder.toString());
             }

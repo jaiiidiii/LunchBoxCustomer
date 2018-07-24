@@ -30,7 +30,7 @@ public class Order {
     private String orderDeliverDate;
     @SerializedName("orderTotalAmount")
     @Expose
-    private Integer orderTotalAmount;
+    private Double orderTotalAmount;
     @SerializedName("orderStatus")
     @Expose
     private Integer orderStatus;
@@ -100,11 +100,11 @@ public class Order {
         this.orderDeliverDate = orderDeliverDate;
     }
 
-    public Integer getOrderTotalAmount() {
+    public Double getOrderTotalAmount() {
         return orderTotalAmount;
     }
 
-    public void setOrderTotalAmount(Integer orderTotalAmount) {
+    public void setOrderTotalAmount(Double orderTotalAmount) {
         this.orderTotalAmount = orderTotalAmount;
     }
 

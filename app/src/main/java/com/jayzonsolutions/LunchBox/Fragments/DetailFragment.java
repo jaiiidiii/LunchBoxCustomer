@@ -1,6 +1,6 @@
 package com.jayzonsolutions.LunchBox.Fragments;
 
-
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -11,7 +11,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +31,8 @@ import com.jayzonsolutions.LunchBox.Constant;
 import com.jayzonsolutions.LunchBox.PlaceOrderActivity;
 import com.jayzonsolutions.LunchBox.R;
 import com.jayzonsolutions.LunchBox.Service.FoodmakerService;
+import com.jayzonsolutions.LunchBox.model.Cart;
+import com.jayzonsolutions.LunchBox.model.CartItem;
 import com.jayzonsolutions.LunchBox.model.Categories;
 import com.jayzonsolutions.LunchBox.model.FoodmakerDishes;
 import com.jayzonsolutions.LunchBox.model.Products;
@@ -48,15 +50,33 @@ import retrofit2.Response;
 
 public class DetailFragment extends Fragment {
     public static Integer id;
+    Context context = getContext();
 
     Animation startAnimation;
-    List<FoodmakerDishes> foodmakerDishesList;
+    private LinearLayout linear_progressbar;
+
+    private Toolbar toolbar;
+    private TextView toolBarTxt;
+
     private RecyclerView recyclerView;
     private RecycleAdapter_AddProduct mAdapter;
+    private int status_code;
+    private String token, totalPriceOfProducts;
     private FoodmakerService foodmakerService;
+    List<FoodmakerDishes> foodmakerDishesList;
+
     private Map<Integer,Double> orderdishes;
+    private Map<Integer,CartItem> cartItemMap;
+//    private ProductArrayList productsArrayList;
+
+    private TextView quantityOfTotalProduct, priceOfTotalProduct, next;
     private Categories categories;
     private ImageView btn;
+    private int[] IMAGES = {R.drawable.biryani, R.drawable.koorma, R.drawable.pulao, R.drawable.chicken_karahi, R.drawable.salad};
+    private String[] NamES = {"Biryani", "koorma", "Pulao", "Chicken_karahi", "Salad"};
+    private String[] PRICE = {"150", "132", "101", "93", "85"};
+
+
     private View view;
 
 
@@ -73,7 +93,7 @@ public class DetailFragment extends Fragment {
                              Bundle savedInstanceState) {
         //create this screen orderDishes list
         orderdishes = new HashMap<>();
-
+        cartItemMap = new HashMap<>();
 
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_detail, container, false);
@@ -263,15 +283,15 @@ public class DetailFragment extends Fragment {
                         int foodmakerId = foodmakerDishesList.get(position).getFoodmakerid();
                         Constant.foodmakerdishes.put(foodmakerId,orderdishes);
 
+
                         /**
                          * cart item
                          */
 
 
-
-
-
-
+                        cartItemMap.put(foodmakerdishId,new CartItem(foodmakerdishId,foodmakerDishesList.get(position),quan));
+                        Cart.orderdishes.put(foodmakerdishId,new CartItem(foodmakerdishId,foodmakerDishesList.get(position),quan));
+                        Cart.foodmakerdishes.put(foodmakerId,cartItemMap);
 
                     }
 
