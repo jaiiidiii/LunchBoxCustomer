@@ -14,6 +14,9 @@ public class FoodmakerDishes {
     @SerializedName("foodmakerid")
     @Expose
     private Integer foodmakerid;
+    @SerializedName("name")
+    @Expose
+    private String name;
     @SerializedName("description")
     @Expose
     private String description;
@@ -53,6 +56,15 @@ public class FoodmakerDishes {
     public void setFoodmakerid(Integer foodmakerid) {
         this.foodmakerid = foodmakerid;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
 
     public String getDescription() {
         return description;

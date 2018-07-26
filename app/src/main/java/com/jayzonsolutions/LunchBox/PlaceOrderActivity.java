@@ -88,6 +88,11 @@ public class PlaceOrderActivity extends AppCompatActivity implements
                  * only for testing
                  * start
                  */
+                if(Cart.orderdishes.size() == 0){
+                    Toast.makeText(PlaceOrderActivity.this,"Your Cart is Empty",Toast.LENGTH_LONG).show();
+                    return;
+                }
+
                 Double totalPrice = 0.00;
                 Set orderdishesKey1 = Cart.orderdishes.keySet();
                 Set FoodmakerIdKey1 = Cart.foodmakerdishes.keySet();
