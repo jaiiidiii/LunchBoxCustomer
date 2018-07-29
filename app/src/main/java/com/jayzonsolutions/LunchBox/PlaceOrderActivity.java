@@ -63,6 +63,13 @@ public class PlaceOrderActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_placeorder);
 
+        if(Constant.customer == null){
+            Intent intent = new Intent(PlaceOrderActivity.this,signin.class);
+            startActivity(intent);
+        }
+
+        final Integer customerId = Integer.parseInt(Constant.customer.getCustomerId());
+
         btnPlacePicker= findViewById(R.id.place_pick);
         btnDatePicker= findViewById(R.id.btn_date);
         btnTimePicker= findViewById(R.id.btn_time);
@@ -102,7 +109,7 @@ public class PlaceOrderActivity extends AppCompatActivity implements
 
                     Log.v("foodmaker order" ,"foodakerid ==> "+ foodmakerId+"\norderdishes => "+foodmakerOrderDishes);
                     Order order = new Order(); //create order instant
-                    order.setOrderCustomerId(10);
+                    order.setOrderCustomerId(customerId);
                     order.setOrderShipmentAddress(placeDetails.getText().toString());
                     order.setOrderDate(txtDate.getText().toString());
 

@@ -32,7 +32,7 @@
             android:orientation="vertical">
 
             <customfonts.MyEditText
-                android:id="@+id/usrusr"
+                android:id="@+id/useremail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="35dp"
@@ -55,7 +55,7 @@
                 android:background="@color/textColor" />
 
             <customfonts.MyEditText
-                android:id="@+id/pswrd"
+                android:id="@+id/userpass"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="35dp"
