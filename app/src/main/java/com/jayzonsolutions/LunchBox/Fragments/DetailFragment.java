@@ -216,10 +216,10 @@ public class DetailFragment extends Fragment {
         public void onBindViewHolder(@NonNull final RecycleAdapter_AddProduct.MyViewHolder holder, final int position) {
 //            Products movie = productsList.get(position);
 
-            holder.title.setText(foodmakerDishesList.get(position).getDish().getDishName());
-            holder.price.setText(foodmakerDishesList.get(position).getDish().getDishSellingPrice().toString());
+            holder.title.setText(""+foodmakerDishesList.get(position).getDish().getDishName());
+            holder.price.setText(""+foodmakerDishesList.get(position).getDish().getDishSellingPrice().toString());
           //  holder.price.setText(categories.getProductsArrayList().get(position).getPrice());
-            holder.quantityTxt.setText(foodmakerDishesList.get(position).getDish().getDishQuantity().toString());
+            holder.quantityTxt.setText(""+foodmakerDishesList.get(position).getDish().getDishQuantity().toString());
          //   holder.quantityTxt.setText(categories.getProductsArrayList().get(position).getQuantity() + "");
 
 
@@ -229,11 +229,22 @@ public class DetailFragment extends Fragment {
             int totalPrice = holder.quantity * foodmakerDishesList.get(position).getDish().getDishSellingPrice();
 
 
-         /*   Glide.with(context).load(ApiUtils.BASE_URL+"images/es2.jpg").
+            String imagePath = ((foodmakerDishesList.get(position).getImagepath() != null)?foodmakerDishesList.get(position).getImagepath():"http://localhost:8080/images/user_na.jpg");
+
+
+            Glide.with(context).load(ApiUtils.BASE_URL+(imagePath.substring(21))).
                     apply(RequestOptions.
                             centerCropTransform().fitCenter().
                             diskCacheStrategy(DiskCacheStrategy.ALL)).
-                    into(holder.image);*/
+                    into(holder.image);
+
+/*
+           Glide.with(context).load(ApiUtils.BASE_URL+"images/es2.jpg").
+                    apply(RequestOptions.
+                            centerCropTransform().fitCenter().
+                            diskCacheStrategy(DiskCacheStrategy.ALL)).
+                    into(holder.image);
+*/
 
             if (position == recentPos) {
                 Log.e("pos", "" + recentPos);

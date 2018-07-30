@@ -108,7 +108,9 @@ public class DishesFragment extends Fragment {
         context = getActivity();
 
         GPSTracker gpsTracker = new GPSTracker(context);
-        foodmakerService.getFoodmakerListNearBy(gpsTracker.getLatitude(),gpsTracker.getLongitude()).enqueue(new Callback<List<Foodmaker>>() {
+     //   foodmakerService.getFoodmakerListNearBy(gpsTracker.getLatitude(),gpsTracker.getLongitude()).enqueue(new Callback<List<Foodmaker>>() {
+        foodmakerService.getFoodmakerList().enqueue(new Callback<List<Foodmaker>>() {
+
             @Override
             public void onResponse(@NonNull Call<List<Foodmaker>> call, @NonNull Response<List<Foodmaker>> response) {
 

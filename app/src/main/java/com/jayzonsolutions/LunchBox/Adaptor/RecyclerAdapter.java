@@ -79,9 +79,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Myview
                 centerCropTransform().fitCenter().
                 diskCacheStrategy(DiskCacheStrategy.ALL)).
                 into(holder.FoodMakerImage);*/
+        String imagePath = ((movieList.get(position).getFoodmakerImagePath() != null)?movieList.get(position).getFoodmakerImagePath():"http://localhost:8080/images/user_na.jpg");
 
 
-        Glide.with(context).load(ApiUtils.BASE_URL+(movieList.get(position).getFoodmakerImagePath().substring(21))).
+        Glide.with(context).load(ApiUtils.BASE_URL+(imagePath.substring(21))).
                 apply(RequestOptions.
                         centerCropTransform().fitCenter().
                         diskCacheStrategy(DiskCacheStrategy.ALL)).
