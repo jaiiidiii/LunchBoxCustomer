@@ -114,7 +114,7 @@ public class DetailFragment extends Fragment {
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
-        //  Toast.makeText(getActivity().getApplicationContext(), "id =" + id, Toast.LENGTH_SHORT).show();
+      //  Toast.makeText(getActivity().getApplicationContext(), "id =" + id, Toast.LENGTH_SHORT).show();
 
 
 /**
@@ -128,8 +128,8 @@ public class DetailFragment extends Fragment {
             public void onResponse(@NonNull Call<List<FoodmakerDishes>> call, @NonNull Response<List<FoodmakerDishes>> response) {
                 Toast.makeText(getContext(), "success" , Toast.LENGTH_LONG).show();
 
-                foodmakerDishesList = response.body();
-                mAdapter.setFoodmakerDishesList(foodmakerDishesList);
+              foodmakerDishesList = response.body();
+              mAdapter.setFoodmakerDishesList(foodmakerDishesList);
  /*               for (FoodmakerDishes foodmakerDishes : response.body()) {
                     Log.d("TAG", "Response = " + foodmakerDishes.getDish().getDishName());
 
@@ -164,8 +164,8 @@ public class DetailFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 //  showTimePickerDialog(v);
-                Intent intent = new Intent(getActivity(), PlaceOrderActivity.class);
-                startActivity(intent);
+                 Intent intent = new Intent(getActivity(), PlaceOrderActivity.class);
+                 startActivity(intent);
                 getActivity().overridePendingTransition(0,0);
 
             }
@@ -216,24 +216,35 @@ public class DetailFragment extends Fragment {
         public void onBindViewHolder(@NonNull final RecycleAdapter_AddProduct.MyViewHolder holder, final int position) {
 //            Products movie = productsList.get(position);
 
-            holder.title.setText(foodmakerDishesList.get(position).getDish().getDishName());
-            holder.price.setText(foodmakerDishesList.get(position).getDish().getDishSellingPrice().toString());
-            //  holder.price.setText(categories.getProductsArrayList().get(position).getPrice());
-            holder.quantityTxt.setText(foodmakerDishesList.get(position).getDish().getDishQuantity().toString());
-            //   holder.quantityTxt.setText(categories.getProductsArrayList().get(position).getQuantity() + "");
+            holder.title.setText(""+foodmakerDishesList.get(position).getDish().getDishName());
+            holder.price.setText(""+foodmakerDishesList.get(position).getDish().getDishSellingPrice().toString());
+          //  holder.price.setText(categories.getProductsArrayList().get(position).getPrice());
+            holder.quantityTxt.setText(""+foodmakerDishesList.get(position).getDish().getDishQuantity().toString());
+         //   holder.quantityTxt.setText(categories.getProductsArrayList().get(position).getQuantity() + "");
 
 
             holder.quantity = 1;
             holder.quantity = foodmakerDishesList.get(position).getDish().getDishQuantity();
-            //   holder.quantity = categories.getProductsArrayList().get(position).getQuantity();
+         //   holder.quantity = categories.getProductsArrayList().get(position).getQuantity();
             int totalPrice = holder.quantity * foodmakerDishesList.get(position).getDish().getDishSellingPrice();
 
 
-         /*   Glide.with(context).load(ApiUtils.BASE_URL+"images/es2.jpg").
+            String imagePath = ((foodmakerDishesList.get(position).getImagepath() != null)?foodmakerDishesList.get(position).getImagepath():"http://localhost:8080/images/user_na.jpg");
+
+
+            Glide.with(context).load(ApiUtils.BASE_URL+(imagePath.substring(21))).
                     apply(RequestOptions.
                             centerCropTransform().fitCenter().
                             diskCacheStrategy(DiskCacheStrategy.ALL)).
-                    into(holder.image);*/
+                    into(holder.image);
+
+/*
+           Glide.with(context).load(ApiUtils.BASE_URL+"images/es2.jpg").
+                    apply(RequestOptions.
+                            centerCropTransform().fitCenter().
+                            diskCacheStrategy(DiskCacheStrategy.ALL)).
+                    into(holder.image);
+*/
 
             if (position == recentPos) {
                 Log.e("pos", "" + recentPos);
@@ -256,13 +267,13 @@ public class DetailFragment extends Fragment {
 
 
 
-            //       categories.getProductsArrayList().get(position).setPriceAsPerQuantity("" + totalPrice);
-            foodmakerDishesList.get(position).getDish().setDishPriceAsPerQuantity(" "+totalPrice);
+     //       categories.getProductsArrayList().get(position).setPriceAsPerQuantity("" + totalPrice);
+foodmakerDishesList.get(position).getDish().setDishPriceAsPerQuantity(" "+totalPrice);
 
             holder.llPlus.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Log.e("dish"," => "+foodmakerDishesList.get(position).getDish().getDishId());
+            Log.e("dish"," => "+foodmakerDishesList.get(position).getDish().getDishId());
                     Log.e("dish"," => "+foodmakerDishesList.get(position).getFoodmakerDishesId());
 
                     if (holder.quantity < 10) {
@@ -271,17 +282,18 @@ public class DetailFragment extends Fragment {
                         recentPos = position;
                         holder.quantity = holder.quantity + 1;
                         foodmakerDishesList.get(position).getDish().setDishQuantity(holder.quantity);
-                        //   categories.getProductsArrayList().get(position).setQuantity(holder.quantity);
+                     //   categories.getProductsArrayList().get(position).setQuantity(holder.quantity);
                         foodmakerDishesList.get(position).getDish().setDishPriceAsPerQuantity("" + holder.quantity * foodmakerDishesList.get(position).getDish().getDishSellingPrice());
-                        //    categories.getProductsArrayList().get(position).setPriceAsPerQuantity("" + holder.quantity * Integer.parseInt(categories.getProductsArrayList().get(position).getPrice()));
+                    //    categories.getProductsArrayList().get(position).setPriceAsPerQuantity("" + holder.quantity * Integer.parseInt(categories.getProductsArrayList().get(position).getPrice()));
 
                         holder.quantityTxt.setText("" + holder.quantity);
 
-                        double quan = (double) holder.quantity;
-                        orderdishes.put(foodmakerdishId,quan);
-                        Constant.orderdishes.put(foodmakerdishId,quan);
-                        int foodmakerId = foodmakerDishesList.get(position).getFoodmakerid();
-                        Constant.foodmakerdishes.put(foodmakerId,orderdishes);
+                            double quan = (double) holder.quantity;
+                          orderdishes.put(foodmakerdishId,quan);
+                          Constant.orderdishes.put(foodmakerdishId,quan);
+                          int foodmakerId = foodmakerDishesList.get(position).getFoodmakerid();
+                          Constant.foodmakerdishes.put(foodmakerId,orderdishes);
+
 
 
                         /**
@@ -312,10 +324,10 @@ public class DetailFragment extends Fragment {
 
                         holder.quantity = holder.quantity - 1;
                         foodmakerDishesList.get(position).getDish().setDishQuantity(holder.quantity);
-                        //        categories.getProductsArrayList().get(position).setQuantity(holder.quantity);
+                //        categories.getProductsArrayList().get(position).setQuantity(holder.quantity);
                         foodmakerDishesList.get(position).getDish().setDishPriceAsPerQuantity("" + holder.quantity * foodmakerDishesList.get(position).getDish().getDishSellingPrice());
-                        //          categories.getProductsArrayList().get(position).setPriceAsPerQuantity("" + holder.quantity *
-                        //              Integer.parseInt(categories.getProductsArrayList().get(position).getPrice()));
+              //          categories.getProductsArrayList().get(position).setPriceAsPerQuantity("" + holder.quantity *
+                  //              Integer.parseInt(categories.getProductsArrayList().get(position).getPrice()));
 
                         holder.quantityTxt.setText("" + holder.quantity);
 

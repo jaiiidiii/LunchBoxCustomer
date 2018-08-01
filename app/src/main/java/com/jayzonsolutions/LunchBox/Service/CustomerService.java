@@ -13,8 +13,7 @@ public interface CustomerService {
 
     @POST("customer/login")
     @FormUrlEncoded
-    Call<Customer> customerLogin(@Field("customerEmail") String customerEmail, @Field("customerPassword") String customerPassword
-                                 ,@Field("token") String token);
+    Call<Customer> customerLogin(@Field("customerEmail") String customerEmail, @Field("customerPassword") String customerPassword);
 
     @POST("customer/signup")
     Call<ApiResponse> customerSignup(@Body Customer customer);

@@ -17,9 +17,12 @@ public interface FoodmakerService {
     Call<List<Foodmaker>> getFoodmakerList();
 
     @GET("foodmaker/foodmakers-nearBy-list")
-    Call<List<Foodmaker>> getFoodmakerListNearBy(@Query("lat") Double lat, @Query("longt") Double longt);
+    Call<List<Foodmaker>> getFoodmakerListNearBy1(@Query("miles") Integer miles, @Query("lat") Double lat, @Query("longt") Double longt);
 
     @GET("foodmaker_dishes/foodmakersdishes-list-byfoodmakerid")
     Call<List<FoodmakerDishes>> getDishesByFoodmakerId(@Query("foodmakerId") Integer foodmakerId);
+
+    @GET("foodmaker/foodmakers-nearBy-list")
+    Call<List<Foodmaker>> getFoodmakerListNearBy(@Query("lat") Double lat, @Query("longt") Double longt);
 
 }

@@ -10,8 +10,13 @@ import retrofit2.http.POST;
 
 public interface APIService {
 
+    /*@POST("customer/login")
+    @FormUrlEncoded
+    Call<ApiResponse> savePost(@Field("customerEmail") String customerEmail, @Field("customerPassword") String customerPassword);
+*/
     @POST("customer/login")
     @FormUrlEncoded
     Call<Customer> savePost(@Field("customerEmail") String customerEmail, @Field("customerPassword") String customerPassword
-    , @Field("token") String token);
+            , @Field("token") String token);
+
 }

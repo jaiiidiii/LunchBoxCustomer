@@ -1,5 +1,6 @@
 package com.jayzonsolutions.LunchBox;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -9,7 +10,9 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.CompoundButton;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.jayzonsolutions.LunchBox.Fragments.ChatFragment;
 import com.jayzonsolutions.LunchBox.Fragments.MessageFragment;
@@ -18,7 +21,7 @@ import com.jayzonsolutions.LunchBox.Fragments.ProfileFragment;
 public class customerActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawer;
-
+    ToggleButton toggleButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +47,25 @@ public class customerActivity extends AppCompatActivity implements NavigationVie
                     new MessageFragment()).commit();
             navigationView.setCheckedItem(R.id.nav_message);
         }
+
+        /**
+         * toggle button working
+         * start*/
+       toggleButton = (ToggleButton) findViewById(R.id.update_user_status);
+        toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    // The toggle is enabled
+                    Toast.makeText(customerActivity.this, "enabled", Toast.LENGTH_SHORT).show();
+                } else {
+                    // The toggle is disabled
+                    Toast.makeText(customerActivity.this, "disabled", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        /**
+         * toggle button working
+         * end*/
     }
 
     @Override
@@ -54,8 +76,10 @@ public class customerActivity extends AppCompatActivity implements NavigationVie
                         new MessageFragment()).commit();
                 break;
             case R.id.nav_chat:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new ChatFragment()).commit();
+                /*getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new ChatFragment()).commit();*/
+                Intent in = new Intent(customerActivity.this,PlaceOrderActivity.class);
+                startActivity(in);
                 break;
             case R.id.nav_profile:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,

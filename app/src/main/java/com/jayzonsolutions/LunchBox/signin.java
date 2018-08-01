@@ -32,6 +32,11 @@ public class signin extends AppCompatActivity {
     private APIService mAPIService;
     private FoodmakerService foodmakerService;
 
+
+    //
+    MyEditText useremail;
+    MyEditText userpass;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +44,8 @@ public class signin extends AppCompatActivity {
         sback = findViewById(R.id.sinb);
         login = findViewById(R.id.sin);
         //   getFoodmakerList = findViewById(R.id.getFoodmakerList);
+        useremail = findViewById(R.id.useremail);
+        userpass = findViewById(R.id.userpass);
 
         mAPIService = ApiUtils.getAPIService();
 
@@ -51,24 +58,45 @@ public class signin extends AppCompatActivity {
                 //  Toast.makeText(signin.this,"clicked",Toast.LENGTH_LONG).show();
                 //api call
                 //if (validate()) {
-                    mAPIService.savePost("sohail@gmail.com", "123456",DeviceID).enqueue(new Callback<Customer>() {
-                        @Override
-                        public void onResponse(@NonNull Call<Customer> call, @NonNull Response<Customer> response) {
-                            Intent intent = new Intent(signin.this, customerActivity.class);
-                            startActivity(intent);
-                         //   Toast.makeText(signin.this, "success", Toast.LENGTH_LONG).show();
-                        }
-                        @Override
-                        public void onFailure(@NonNull Call<Customer> call, @NonNull Throwable t) {
-                            Toast.makeText(signin.this, "failed ", Toast.LENGTH_LONG).show();
-                        }
-                    });
+
+                if(useremail.getText().toString()=="" ||userpass.getText().toString() == ""){
+                    Toast.makeText(signin.this, "Fields are required can't be empty", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+
+
+
+                //mAPIService.savePost("sohail@gmail.com", "123456",DeviceID).enqueue(new Callback<Customer>() {
+                mAPIService.savePost(useremail.getText().toString(), userpass.getText().toString(),DeviceID).enqueue(new Callback<Customer>() {
+                    @Override
+                    public void onResponse(@NonNull Call<Customer> call, @NonNull Response<Customer> response) {
+                       if(response.body() == null){
+                           Toast.makeText(signin.this, "Email Address or Password is incorrect", Toast.LENGTH_LONG).show();
+                       }else{
+                           Toast.makeText(signin.this, "Successfully Logged in", Toast.LENGTH_LONG).show();
+                           Constant.customer = response.body();
+                           Intent intent = new Intent(signin.this, customerActivity.class);
+                           startActivity(intent);
+                       }
+
+
+
+                        //
+                    }
+                    @Override
+                    public void onFailure(@NonNull Call<Customer> call, @NonNull Throwable t) {
+                        Toast.makeText(signin.this, "Connection Problem ", Toast.LENGTH_LONG).show();
+                    }
+                });
+
+
                 //}
                 //api call end
 
-             /*   Intent intent = new Intent(signin.this, customerActivity.class);
-                startActivity(intent);
-*/
+               /* Intent intent = new Intent(signin.this, customerActivity.class);
+                startActivity(intent);*/
+
 
             }
         });
@@ -84,8 +112,8 @@ public class signin extends AppCompatActivity {
     }
 
     public boolean validate() {
-        MyEditText name = findViewById(R.id.usrusr);
-        MyEditText pass = findViewById(R.id.pswrd);
+        MyEditText name = findViewById(R.id.useremail);
+        MyEditText pass = findViewById(R.id.userpass);
 
         if (name.getText().toString().length() == 0 && pass.getText().toString().length() == 0) {
             name.setError("Email is required!");
@@ -113,7 +141,7 @@ public class signin extends AppCompatActivity {
             //Toast.makeText(this, "Firebase Reg Id: " + regId, Toast.LENGTH_SHORT).show();
             DeviceID = regId;
         } else{}
-            //Toast.makeText(this, "Firebase Reg Id is not received yet!", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "Firebase Reg Id is not received yet!", Toast.LENGTH_SHORT).show();
     }
 
 }
