@@ -17,6 +17,7 @@ import android.util.Log;
 
 import com.jayzonsolutions.LunchBox.R;
 import com.jayzonsolutions.LunchBox.app.Config;
+import com.jayzonsolutions.LunchBox.customerActivity;
 import com.jayzonsolutions.LunchBox.main;
 import com.jayzonsolutions.LunchBox.util.NotificationUtils;
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -90,7 +91,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
      * @param messageBody FCM message body received.
      */
     private void sendNotification(String messageBody, String title) {
-        Intent intent = new Intent(this, main.class);
+        Intent intent = new Intent(this, customerActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);
@@ -173,7 +174,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 notificationUtils.playNotificationSound();
             } else {
                 // app is in background, show the notification in notification tray
-                Intent resultIntent = new Intent(getApplicationContext(), main.class);
+                Intent resultIntent = new Intent(getApplicationContext(), customerActivity.class);
                 resultIntent.putExtra("message", message);
 
                 // check for image attachment

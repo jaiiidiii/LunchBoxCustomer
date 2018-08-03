@@ -25,4 +25,6 @@ public interface FoodmakerService {
     @GET("foodmaker/foodmakers-nearBy-list")
     Call<List<Foodmaker>> getFoodmakerListNearBy(@Query("lat") Double lat, @Query("longt") Double longt);
 
+
+
 }

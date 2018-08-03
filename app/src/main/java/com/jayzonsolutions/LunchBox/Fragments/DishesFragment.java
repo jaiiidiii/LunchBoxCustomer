@@ -11,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -39,8 +40,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class DishesFragment extends Fragment {
+//public class DishesFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener  {
+public class DishesFragment extends Fragment  {
     final GlobalVariables g;
+//    private SwipeRefreshLayout swipeRefreshLayout;
    // List<Movie> foodmakerList;
     List<Foodmaker> foodmakerList;
     RecyclerView recyclerView;
@@ -49,6 +52,7 @@ public class DishesFragment extends Fragment {
     GPSTracker gps;
     double latitude;
     double longitude;
+    View v ;
     private FoodmakerService foodmakerService;
     private APIService mAPIService;
     //Permision code that will be checked in the method onRequestPermissionsResult
@@ -69,8 +73,10 @@ public class DishesFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
+      //  if (v == null) {
+            v = inflater.inflate(R.layout.fragment_dishes, container, false);
+     //   }
 
-        View v = inflater.inflate(R.layout.fragment_dishes, container, false);
 
 
         //  final GlobalVariables g = GlobalVariables.GetInstance();
@@ -85,8 +91,8 @@ public class DishesFragment extends Fragment {
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(1, dpToPx(), true));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        recyclerAdapter = new RecyclerAdapter(getContext(), foodmakerList);
-        recyclerView.setAdapter(recyclerAdapter);
+        //recyclerAdapter = new RecyclerAdapter(getContext(), foodmakerList);
+       // recyclerView.setAdapter(recyclerAdapter);
 
 
         checkPermission();
@@ -96,19 +102,38 @@ public class DishesFragment extends Fragment {
 
         mAPIService = ApiUtils.getAPIService();
         foodmakerService = ApiUtils.getFoodmakerService();
+        context = getActivity();
+
+        GPSTracker gpsTracker = new GPSTracker(context);
+
+        //   foodmakerService.getFoodmakerListNearBy(gpsTracker.getLatitude(),gpsTracker.getLongitude()).enqueue(new Callback<List<Foodmaker>>() {
+
+  /*      swipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe_refresh_layout_complaint);
+        swipeRefreshLayout.setOnRefreshListener((SwipeRefreshLayout.OnRefreshListener) context);
+        *//**
+         * Showing Swipe Refresh animation on activity create
+         * As animation won't start on onCreate, post runnable is used
+         *//*
+        swipeRefreshLayout.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        //    swipeRefreshLayout.setRefreshing(true);
+
+                                        requestOrder();
+
+                                    }
+                                }
+        );
+*/
+        requestOrder();
 
 
         return v;
     }
 
-    @Override
-    public void onResume() {
+    private void requestOrder() {
 
-        super.onResume();
-        context = getActivity();
 
-        GPSTracker gpsTracker = new GPSTracker(context);
-     //   foodmakerService.getFoodmakerListNearBy(gpsTracker.getLatitude(),gpsTracker.getLongitude()).enqueue(new Callback<List<Foodmaker>>() {
         foodmakerService.getFoodmakerList().enqueue(new Callback<List<Foodmaker>>() {
 
             @Override
@@ -117,8 +142,11 @@ public class DishesFragment extends Fragment {
                 if(foodmakerList.size() <= 0)
                 {
                     foodmakerList = response.body();
-                    Log.d("TAG", "Response = " + foodmakerList);
-                    recyclerAdapter.setMovieList(foodmakerList);
+                    //   Log.d("TAG", "Response = " + foodmakerList);
+                    //recyclerAdapter.setMovieList(foodmakerList);
+                    recyclerAdapter = new RecyclerAdapter(getContext(), foodmakerList);
+                    recyclerView.setAdapter(recyclerAdapter);
+
                 }
                 else
                 {
@@ -132,21 +160,27 @@ public class DishesFragment extends Fragment {
                 Toast.makeText(context, "no foodmaker available in your area", Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+  /*  @Override
+    public void onResume() {
+
+        super.onResume();
 
 
 
 
 
-        /*foodmakerService.getFoodmakerList().enqueue(new Callback<List<Foodmaker>>() {
+        *//*foodmakerService.getFoodmakerList().enqueue(new Callback<List<Foodmaker>>() {
             @Override
             public void onResponse(@NonNull Call<List<Foodmaker>> call, @NonNull Response<List<Foodmaker>> response) {
-              *//*  Toast.makeText(main.this, "success" + response.body().toString(), Toast.LENGTH_LONG).show();
+              *//**//*  Toast.makeText(main.this, "success" + response.body().toString(), Toast.LENGTH_LONG).show();
                 for (Foodmaker foodmaker : response.body()) {
                     System.out.println(foodmaker.getFoodmakerName());
 
 
                 }
-*//*
+*//**//*
                 foodmakerList = response.body();
                 Log.d("TAG", "Response = " + foodmakerList);
                 recyclerAdapter.setMovieList(foodmakerList);
@@ -158,12 +192,12 @@ public class DishesFragment extends Fragment {
                 Toast.makeText(context, "failed ", Toast.LENGTH_LONG).show();
 
             }
-        });*/
+        });*//*
 
         // super.onResume();
 
     }
-
+*/
     private void checkPermission() {
         if (isReadLocationAllowed()) {
             GetLocation();
@@ -279,6 +313,11 @@ public class DishesFragment extends Fragment {
         Resources r = getResources();
         return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 0, r.getDisplayMetrics()));
     }
+
+  /*  @Override
+    public void onRefresh() {
+        requestOrder();
+    }*/
 
     public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
 

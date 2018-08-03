@@ -25,7 +25,7 @@ public class MessageFragment extends Fragment {
 
     private int[] tabIcons = {
             R.drawable.ic_message,
-            R.drawable.ic_message,
+          //  R.drawable.ic_message,
             //    R.drawable.ic_message
     };
 
@@ -53,14 +53,14 @@ public class MessageFragment extends Fragment {
         //   ViewPagerAdapter adapter = new ViewPagerAdapter(getActivity().getSupportFragmentManager());
         ViewPagerAdapter adapter = new ViewPagerAdapter(Objects.requireNonNull(getActivity()).getSupportFragmentManager());
         adapter.addFragment(new DishesFragment(), "DISHES");
-        adapter.addFragment(new TwoFragment(), "CATEGORY");
+        //adapter.addFragment(new TwoFragment(), "CATEGORY");
 
         viewPager.setAdapter(adapter);
     }
 
     private void setupTabIcons() {
         Objects.requireNonNull(tabLayout.getTabAt(0)).setIcon(tabIcons[0]);
-        Objects.requireNonNull(tabLayout.getTabAt(1)).setIcon(tabIcons[1]);
+        //Objects.requireNonNull(tabLayout.getTabAt(1)).setIcon(tabIcons[1]);
         //  Objects.requireNonNull(tabLayout.getTabAt(2)).setIcon(tabIcons[2]);
 
         //      tabLayout.getTabAt(0).setIcon(tabIcons[0]);

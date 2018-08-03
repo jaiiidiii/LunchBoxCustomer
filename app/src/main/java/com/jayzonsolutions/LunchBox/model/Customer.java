@@ -17,6 +17,9 @@ public class Customer {
     @SerializedName("customerPassword")
     @Expose
     private String customerPassword;
+    @SerializedName("customerImagePath")
+    @Expose
+    private String customerImagePath;
     @SerializedName("customerNic")
     @Expose
     private String customerNic;
@@ -115,4 +118,27 @@ public class Customer {
         this.customerRegToken = customerRegToken;
     }
 
+    public String getCustomerImagePath() {
+        return customerImagePath;
+    }
+
+    public void setCustomerImagePath(String customerImagePath) {
+        this.customerImagePath = customerImagePath;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+    public String getCustomerRegToken() {
+        return customerRegToken;
+    }
+
+    public void setCustomerRegToken(String customerRegToken) {
+        this.customerRegToken = customerRegToken;
+    }
 }

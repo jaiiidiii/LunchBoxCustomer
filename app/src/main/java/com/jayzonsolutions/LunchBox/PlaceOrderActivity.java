@@ -222,18 +222,20 @@ public class PlaceOrderActivity extends AppCompatActivity implements
                         @Override
                         public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
 
-                            Toast.makeText(PlaceOrderActivity.this,"true json",Toast.LENGTH_LONG).show();
+                            Toast.makeText(PlaceOrderActivity.this,"Order Placed Successfully ",Toast.LENGTH_LONG).show();
 
                             //     System.out.println(response.body().toString());
-
+Intent intent = new Intent(PlaceOrderActivity.this, customerActivity.class);
+startActivity(intent);
 
 
                         }
 
                         @Override
                         public void onFailure(Call<ApiResponse> call, Throwable t) {
-                            Toast.makeText(PlaceOrderActivity.this,"Successfully placed",Toast.LENGTH_LONG).show();
-
+                            Toast.makeText(PlaceOrderActivity.this,"Network Error",Toast.LENGTH_LONG).show();
+                         /*   Intent intent = new Intent(PlaceOrderActivity.this, customerActivity.class);
+                            startActivity(intent);*/
                         }
                     });
 

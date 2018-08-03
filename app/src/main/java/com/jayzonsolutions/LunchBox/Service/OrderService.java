@@ -11,6 +11,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 
 public interface OrderService {
 
@@ -23,4 +24,17 @@ public interface OrderService {
 
     @POST("order/save-order")
     Call<ApiResponse> placeOrder(@Body Order order);
+
+    @GET("customer/get-orderByCustomerId")
+    Call<List<Order>> getOrdersBycustomerId(@Query("customerId") Integer customerId);
+
+    @GET("customer/get-ack-orderByCustomerId")
+    Call<List<Order>> getAckOrdersBycustomerId(@Query("customerId") Integer customerId);
+
+    @GET("customer/get-done-orderByCustomerId")
+    Call<List<Order>> getDoneOrdersBycustomerId(@Query("customerId") Integer customerId);
+
+    @GET("order/update-order-status")
+    Call<Void> updateOrderStatus(@Query("orderStatus") Integer orderStatus,@Query("orderId") Integer orderId);
+
 }
