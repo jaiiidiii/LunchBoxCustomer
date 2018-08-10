@@ -76,10 +76,10 @@ public class customerActivity extends AppCompatActivity implements NavigationVie
                         new MessageFragment()).commit();
                 break;
             case R.id.nav_chat:
-                /*getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new ChatFragment()).commit();*/
-                Intent in = new Intent(customerActivity.this,PlaceOrderActivity.class);
-                startActivity(in);
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new ChatFragment()).commit();
+                /*Intent in = new Intent(customerActivity.this,PlaceOrderActivity.class);
+                startActivity(in);*/
                 break;
             case R.id.nav_profile:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,

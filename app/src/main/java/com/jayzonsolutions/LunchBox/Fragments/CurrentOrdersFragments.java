@@ -1,7 +1,9 @@
 package com.jayzonsolutions.LunchBox.Fragments;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.graphics.Rect;
 import android.os.Build;
@@ -17,7 +19,9 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +35,7 @@ import com.jayzonsolutions.LunchBox.Service.APIService;
 import com.jayzonsolutions.LunchBox.Service.ItemClickListener;
 import com.jayzonsolutions.LunchBox.Service.OrderService;
 import com.jayzonsolutions.LunchBox.model.Order;
+import com.jayzonsolutions.LunchBox.model.OrderDish;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -222,6 +227,13 @@ public class CurrentOrdersFragments extends Fragment {
             }
 
 
+            holder.setItemClickListener(new ItemClickListener() {
+                @Override
+                public void onItemClick(View v, int pos) {
+                    showDialog(pos);
+                }
+            });
+
 //            holder.price.setText(foodmakerOrderList.get(position).getOrderTotalAmount().toString());
 
 
@@ -236,60 +248,6 @@ public class CurrentOrdersFragments extends Fragment {
 
             //       categories.getProductsArrayList().get(position).setPriceAsPerQuantity("" + totalPrice);
 
-
-/*            holder.setItemClickListener(new ItemClickListener() {
-                @Override
-                public void onItemClick(View v, final int pos) {
-                    Log.d("pos", String.valueOf(pos));
-                    Toast.makeText(context, "Clicked Position =" + pos, Toast.LENGTH_SHORT).show();
-
-//                    Toast.makeText(context, "Pressed Order Item", Toast.LENGTH_SHORT).show();
-                    AlertDialog.Builder alert = new AlertDialog.Builder(context);
-                    alert.setTitle("Done Order");
-                    alert.setMessage("the meal is prepared ?");
-                    alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-
-                            Toast.makeText(context, "Clicked Yes", Toast.LENGTH_SHORT).show();
-
-                            OrderService orderService = ApiUtils.getOrderService();
-                            orderService.updateOrderStatus(3, foodmakerOrderList.get(pos).getOrderId()).enqueue(new Callback<Void>() {
-                                @Override
-                                public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
-                                    Toast.makeText(context, "Order status changed to 2", Toast.LENGTH_LONG).show();
-                                    removeAt(pos);
-
-                                }
-
-                                @Override
-                                public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
-                                    Toast.makeText(context, "Response Failed", Toast.LENGTH_SHORT).show();
-                                    Log.d("TAG", "failed");
-                                }
-                            });
-
-                            //     setOrderStatus(foodmakerOrderList.get(pos).getOrderId());
-                *//*Intent myIntent = new Intent(
-                        CameraPhotoCapture.this,
-                        LoginActivity.class);
-                startActivity(myIntent);
-                finish();*//*
-
-                        }
-                    });
-
-                    alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            Toast.makeText(context, "Clicked No", Toast.LENGTH_SHORT).show();
-
-                        }
-                    });
-
-                    alert.show();
-
-
-                }
-            });*/
         }
 
         @Override
@@ -304,6 +262,75 @@ public class CurrentOrdersFragments extends Fragment {
             notifyItemRangeChanged(position, customerOrderList.size());
         }
 
+
+        void showDialog(final int pos) {
+
+            List<OrderDish> orderDishList = new ArrayList<>(orderList.get(pos).getOrderdishes());
+            String dishes[] = new String[orderDishList.size()];
+
+            for(int i=0;i<orderDishList.size();i++)
+            {
+                dishes[i] = " " +i+ " : " +orderDishList.get(i).getDishes().getName() + " ^ " + orderDishList.get(i).getQuantity()
+                        + " ^ " + orderDishList.get(i).getDishes().getPrice();
+            }
+
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
+            LayoutInflater inflater = getLayoutInflater();
+            View convertView = (View) inflater.inflate(R.layout.custom, null);
+            alertDialog.setView(convertView);
+            alertDialog.setTitle("Order detail");
+            ListView lv = (ListView) convertView.findViewById(R.id.listView1);
+
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(context,R.layout.list_item,R.id.text1,dishes);
+            lv.setAdapter(adapter);
+
+            alertDialog.setPositiveButton("continue", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+
+            alertDialog.setNegativeButton("canel order", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    final AlertDialog.Builder alert_Dialog = new AlertDialog.Builder(context);
+                    alert_Dialog.setTitle("Cancel order");
+                    alert_Dialog.setMessage("are you sure you want to cancel the order?");
+                    alert_Dialog.setPositiveButton("yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Toast.makeText(context, "your order is canceled", Toast.LENGTH_SHORT).show();
+                            OrderService orderService = ApiUtils.getOrderService();
+                            orderService.updateOrderStatus(4, orderList.get(pos).getOrderId()).enqueue(new Callback<Void>() {
+                                @Override
+                                public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
+                                    removeAt(pos);
+                                }
+
+                                @Override
+                                public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+                                    Toast.makeText(context, "connection problem", Toast.LENGTH_SHORT).show();
+                                    Log.d("TAG", "failed");
+                                }
+                            });
+                        }
+                    });
+                    alert_Dialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+
+                    alert_Dialog.show();
+                }
+            });
+
+
+            alertDialog.show();
+
+        }
 
 
         class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
