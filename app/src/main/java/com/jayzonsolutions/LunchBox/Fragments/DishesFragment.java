@@ -314,6 +314,17 @@ public class DishesFragment extends Fragment  {
         return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 0, r.getDisplayMetrics()));
     }
 
+
+    public void finishThisFragment(){
+        getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
+    }
+
+
+
+
+
+
+
   /*  @Override
     public void onRefresh() {
         requestOrder();

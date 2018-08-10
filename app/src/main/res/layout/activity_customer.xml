@@ -50,14 +50,14 @@
                     android:textColor="@color/dark_text"
                     android:textSize="17sp"
                     android:textStyle="bold" />
-                <ToggleButton
+                <!--<ToggleButton
                     android:id="@+id/update_user_status"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checked="true"
                     android:layout_centerHorizontal="true"
                     android:textOff="Disable"
-                    android:textOn="Enable"/>
+                    android:textOn="Enable"/>-->
 
                 <ImageView
                     android:layout_width="20dp"

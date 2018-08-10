@@ -51,7 +51,7 @@ public class customerActivity extends AppCompatActivity implements NavigationVie
         /**
          * toggle button working
          * start*/
-       toggleButton = (ToggleButton) findViewById(R.id.update_user_status);
+       /*toggleButton = (ToggleButton) findViewById(R.id.update_user_status);
         toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
@@ -62,7 +62,7 @@ public class customerActivity extends AppCompatActivity implements NavigationVie
                     Toast.makeText(customerActivity.this, "disabled", Toast.LENGTH_SHORT).show();
                 }
             }
-        });
+        });*/
         /**
          * toggle button working
          * end*/
@@ -82,8 +82,10 @@ public class customerActivity extends AppCompatActivity implements NavigationVie
                 startActivity(in);*/
                 break;
             case R.id.nav_profile:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new ProfileFragment()).commit();
+                /*getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new ProfileFragment()).commit();*/
+                Intent in1 = new Intent(customerActivity.this,UserProfile.class);
+                startActivity(in1);
                 break;
             case R.id.nav_share:
                 Toast.makeText(this, "Share", Toast.LENGTH_SHORT).show();

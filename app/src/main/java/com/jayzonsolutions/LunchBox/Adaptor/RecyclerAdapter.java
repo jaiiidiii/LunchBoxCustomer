@@ -20,6 +20,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.jayzonsolutions.LunchBox.ApiUtils;
 import com.jayzonsolutions.LunchBox.Fragments.DetailFragment;
+import com.jayzonsolutions.LunchBox.Fragments.DishesFragment;
 import com.jayzonsolutions.LunchBox.R;
 import com.jayzonsolutions.LunchBox.Service.ItemClickListener;
 import com.jayzonsolutions.LunchBox.model.Foodmaker;
@@ -110,6 +111,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Myview
                 DetailFragment myFragment = new DetailFragment();
                 myFragment.setId(movieList.get(position).getFoodmakerId());
                 activity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, myFragment).addToBackStack(null).commit();
+
+
+
             }
         });
     }
