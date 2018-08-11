@@ -106,22 +106,20 @@ public class DoneOrdersFragments extends Fragment{
         super.onResume();
         context = getActivity();
 
+        getOrderList();
+
+    }
+
+    public void getOrderList() {
+
         orderService.getDoneOrdersBycustomerId(13).enqueue(new Callback<List<Order>>() {
 
             @Override
             public void onResponse(@NonNull Call<List<Order>> call, @NonNull Response<List<Order>> response) {
 
-                if(orderList.size() <= 0)
-                {
                     orderList = response.body();
                     Log.d("TAG", "Response = " + orderList);
                     recyclerAdapter.setCustomerOrderList(orderList);
-                }
-                else
-                {
-                    Toast.makeText(context, "no past orders", Toast.LENGTH_LONG).show();
-                }
-
             }
 
             @Override
@@ -129,7 +127,6 @@ public class DoneOrdersFragments extends Fragment{
                 Toast.makeText(context, "connection problem", Toast.LENGTH_LONG).show();
             }
         });
-
     }
 
     private int dpToPx() {
@@ -323,7 +320,6 @@ public class DoneOrdersFragments extends Fragment{
 
         void showDialog(final int pos)
         {
-
             foodmakerService = ApiUtils.getFoodmakerService();
 
             LayoutInflater inflater = Objects.requireNonNull(getActivity()).getLayoutInflater();
@@ -332,44 +328,111 @@ public class DoneOrdersFragments extends Fragment{
 
             ratingBar = view.findViewById(R.id.dialog_ratingbar);
 
-            if(orderList.get(pos).getFoodmaker().getAverageRatings() != null)
+            if(orderList.get(pos).getOrderRating() == 0 )
             {
-                ratingBar.setRating(orderList.get(pos).getFoodmaker().getAverageRatings().floatValue());
-                notifyDataSetChanged();
+                ratingBar.setRating(0);
+
+                final AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+                alert.setTitle("Rating");
+                alert.setMessage("how do you rate this app");
+                alert.setView(view);
+
+                alert.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(final DialogInterface dialog, int which) {
+
+                        foodmakerService.setRatings(orderList.get(pos).getOrderCustomerId(),orderList.get(pos).getFoodmakerId(),
+                                (int) ratingBar.getRating()).enqueue(new Callback<ApiResponse>() {
+                            @Override
+                            public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
+                                Toast.makeText(context, "Thankyou for your feedback", Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onFailure(Call<ApiResponse> call, Throwable t) {
+                                Toast.makeText(context, "connection problem", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+                        orderService.updateOrderRating((int) ratingBar.getRating(),orderList.get(pos).getOrderId()).enqueue(new Callback<Void>() {
+                            @Override
+                            public void onResponse(Call<Void> call, Response<Void> response) {
+                                    getOrderList();
+                                    dialog.dismiss();
+                            }
+
+                            @Override
+                            public void onFailure(Call<Void> call, Throwable t) {
+                                getOrderList();
+                                dialog.dismiss();
+                            }
+                        });
+
+                    }
+                });
+
+                alert.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                alert.show();
             }
 
-            final AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
-            alert.setTitle("Rating");
-            alert.setMessage("how do you rate this app");
-            alert.setView(view);
+            else {
 
-            alert.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
+                ratingBar.setRating(orderList.get(pos).getOrderRating().floatValue());
 
-                    foodmakerService.setRatings(orderList.get(pos).getOrderCustomerId(),orderList.get(pos).getFoodmakerId(),
-                            (int) ratingBar.getRating()).enqueue(new Callback<ApiResponse>() {
-                        @Override
-                        public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
-                            notifyDataSetChanged();
-                            Toast.makeText(context, "Thankyou for your feedback", Toast.LENGTH_SHORT).show();
-                        }
+                final AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+                alert.setTitle("Rating");
+                alert.setMessage("you rated the foodmaker");
+                alert.setView(view);
 
-                        @Override
-                        public void onFailure(Call<ApiResponse> call, Throwable t) {
-                            Toast.makeText(context, "connection problem", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                }
-            });
+                alert.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(final DialogInterface dialog, int which) {
 
-            alert.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
+                        foodmakerService.setRatings(orderList.get(pos).getOrderCustomerId(),orderList.get(pos).getFoodmakerId(),
+                                (int) ratingBar.getRating()).enqueue(new Callback<ApiResponse>() {
+                            @Override
+                            public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
+                                Toast.makeText(context, "Thankyou for your feedback", Toast.LENGTH_SHORT).show();
+                            }
 
-                }
-            });
-            alert.show();
+                            @Override
+                            public void onFailure(Call<ApiResponse> call, Throwable t) {
+                                Toast.makeText(context, "connection problem", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+                        orderService.updateOrderRating((int) ratingBar.getRating(),orderList.get(pos).getOrderId()).enqueue(new Callback<Void>() {
+                            @Override
+                            public void onResponse(Call<Void> call, Response<Void> response) {
+                                    getOrderList();
+                                    dialog.dismiss();
+                            }
+
+                            @Override
+                            public void onFailure(Call<Void> call, Throwable t) {
+                                getOrderList();
+                                dialog.dismiss();
+                            }
+                        });
+
+                    }
+                });
+
+                alert.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                alert.show();
+            }
+
+
         }
 
         public void removeAt(int position) {

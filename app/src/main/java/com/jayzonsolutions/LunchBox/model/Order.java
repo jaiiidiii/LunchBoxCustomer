@@ -44,6 +44,10 @@ public class Order {
     @Expose
     private Foodmaker foodmaker;
 
+    @SerializedName("orderRating")
+    @Expose
+    private Integer orderRating;
+
     public Integer getOrderId() {
         return orderId;
     }
@@ -140,4 +144,11 @@ public class Order {
         this.foodmaker = foodmaker;
     }
 
+    public Integer getOrderRating() {
+        return orderRating;
+    }
+
+    public void setOrderRating(Integer orderRating) {
+        this.orderRating = orderRating;
+    }
 }
