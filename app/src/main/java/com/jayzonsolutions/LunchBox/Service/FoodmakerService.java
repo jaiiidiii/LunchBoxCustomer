@@ -1,5 +1,6 @@
 package com.jayzonsolutions.LunchBox.Service;
 
+import com.jayzonsolutions.LunchBox.model.ApiResponse;
 import com.jayzonsolutions.LunchBox.model.Foodmaker;
 import com.jayzonsolutions.LunchBox.model.FoodmakerDishes;
 
@@ -9,6 +10,7 @@ import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 public interface FoodmakerService {
@@ -25,6 +27,7 @@ public interface FoodmakerService {
     @GET("foodmaker/foodmakers-nearBy-list")
     Call<List<Foodmaker>> getFoodmakerListNearBy(@Query("lat") Double lat, @Query("longt") Double longt);
 
-
+    @POST("foodmaker/set-ratings")
+    Call<ApiResponse> setRatings(@Query("customerId") Integer customerId, @Query("foodmakerId") Integer foodmakerId,@Query("stars") Integer stars);
 
 }

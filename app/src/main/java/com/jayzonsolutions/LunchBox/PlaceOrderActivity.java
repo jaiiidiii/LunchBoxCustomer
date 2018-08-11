@@ -428,12 +428,13 @@ startActivity(intent);
             holder.title.setText(""+cartItems.get(position).getFoodmakerDishes().getName());
             holder.price.setText(""+cartItems.get(position).getFoodmakerDishes().getPrice());
             //  holder.price.setText(categories.getProductsArrayList().get(position).getPrice());
-            holder.quantityTxt.setText(""+cartItems.get(position).getQuantity());
+            Double d = cartItems.get(position).getQuantity();
+            holder.quantityTxt.setText(""+d.intValue());
             //   holder.quantityTxt.setText(categories.getProductsArrayList().get(position).getQuantity() + "");
 
 
             holder.quantity = 1;
-            Double d = cartItems.get(position).getQuantity();
+
             holder.quantity = d.intValue();
             //   holder.quantity = categories.getProductsArrayList().get(position).getQuantity();
             Double totalPrice = holder.quantity * cartItems.get(position).getFoodmakerDishes().getPrice();

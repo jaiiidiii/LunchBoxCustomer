@@ -37,4 +37,6 @@ public interface OrderService {
     @GET("order/update-order-status")
     Call<Void> updateOrderStatus(@Query("orderStatus") Integer orderStatus,@Query("orderId") Integer orderId);
 
+    @GET("order/update-order-rating")
+    Call<Void> updateOrderRating(@Query("orderRating") Integer orderRating,@Query("orderId") Integer orderId);
 }

@@ -57,7 +57,7 @@ public class signin extends AppCompatActivity {
 
                 //  Toast.makeText(signin.this,"clicked",Toast.LENGTH_LONG).show();
                 //api call
-                if (validate()) {
+           //     if (validate()) {
 
 /*
                 if(useremail.getText().toString()=="" ||userpass.getText().toString() == ""){
@@ -66,8 +66,8 @@ public class signin extends AppCompatActivity {
                 }
 */
 
-                //mAPIService.savePost("sohail@gmail.com", "123456",DeviceID).enqueue(new Callback<Customer>() {
-                mAPIService.savePost(useremail.getText().toString(), userpass.getText().toString(),DeviceID).enqueue(new Callback<Customer>() {
+                mAPIService.savePost("sohail@gmail.com", "123456",DeviceID).enqueue(new Callback<Customer>() {
+               // mAPIService.savePost(useremail.getText().toString(), userpass.getText().toString(),DeviceID).enqueue(new Callback<Customer>() {
                     @Override
                     public void onResponse(@NonNull Call<Customer> call, @NonNull Response<Customer> response) {
                        if(response.body() == null){
@@ -90,7 +90,7 @@ public class signin extends AppCompatActivity {
                 });
 
 
-                }
+             //   }
                 //api call end
 
                /* Intent intent = new Intent(signin.this, customerActivity.class);

@@ -2,6 +2,7 @@ package com.jayzonsolutions.LunchBox.Fragments;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.v4.app.Fragment;
 
 import android.content.res.Resources;
@@ -10,6 +11,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,22 +21,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.RequestOptions;
+
 import com.jayzonsolutions.LunchBox.ApiUtils;
 import com.jayzonsolutions.LunchBox.GlobalVariables;
 import com.jayzonsolutions.LunchBox.R;
 import com.jayzonsolutions.LunchBox.Service.APIService;
+import com.jayzonsolutions.LunchBox.Service.FoodmakerService;
 import com.jayzonsolutions.LunchBox.Service.ItemClickListener;
 import com.jayzonsolutions.LunchBox.Service.OrderService;
+import com.jayzonsolutions.LunchBox.model.ApiResponse;
 import com.jayzonsolutions.LunchBox.model.Order;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -51,7 +55,9 @@ public class DoneOrdersFragments extends Fragment{
     Context context = getContext();
 
     private OrderService orderService;
+    private FoodmakerService foodmakerService;
     private APIService mAPIService;
+    RatingBar ratingBar;
 
 
     public DoneOrdersFragments() {
@@ -100,22 +106,20 @@ public class DoneOrdersFragments extends Fragment{
         super.onResume();
         context = getActivity();
 
+        getOrderList();
+
+    }
+
+    public void getOrderList() {
+
         orderService.getDoneOrdersBycustomerId(13).enqueue(new Callback<List<Order>>() {
 
             @Override
             public void onResponse(@NonNull Call<List<Order>> call, @NonNull Response<List<Order>> response) {
 
-                if(orderList.size() <= 0)
-                {
                     orderList = response.body();
                     Log.d("TAG", "Response = " + orderList);
                     recyclerAdapter.setCustomerOrderList(orderList);
-                }
-                else
-                {
-                    Toast.makeText(context, "no past orders", Toast.LENGTH_LONG).show();
-                }
-
             }
 
             @Override
@@ -123,7 +127,6 @@ public class DoneOrdersFragments extends Fragment{
                 Toast.makeText(context, "connection problem", Toast.LENGTH_LONG).show();
             }
         });
-
     }
 
     private int dpToPx() {
@@ -245,6 +248,15 @@ public class DoneOrdersFragments extends Fragment{
             //       categories.getProductsArrayList().get(position).setPriceAsPerQuantity("" + totalPrice);
 
 
+            holder.setItemClickListener(new ItemClickListener() {
+                @Override
+                public void onItemClick(View v, int pos) {
+                    showDialog(pos);
+
+                }
+            });
+
+
 /*            holder.setItemClickListener(new ItemClickListener() {
                 @Override
                 public void onItemClick(View v, final int pos) {
@@ -306,13 +318,128 @@ public class DoneOrdersFragments extends Fragment{
         }
 
 
+        void showDialog(final int pos)
+        {
+            foodmakerService = ApiUtils.getFoodmakerService();
+
+            LayoutInflater inflater = Objects.requireNonNull(getActivity()).getLayoutInflater();
+            View view = inflater.inflate(R.layout.fragment_two,null);
+            view.findViewById(R.id.dialog_ratingbar);
+
+            ratingBar = view.findViewById(R.id.dialog_ratingbar);
+
+            if(orderList.get(pos).getOrderRating() == 0 )
+            {
+                ratingBar.setRating(0);
+
+                final AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+                alert.setTitle("Rating");
+                alert.setMessage("how do you rate this app");
+                alert.setView(view);
+
+                alert.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(final DialogInterface dialog, int which) {
+
+                        foodmakerService.setRatings(orderList.get(pos).getOrderCustomerId(),orderList.get(pos).getFoodmakerId(),
+                                (int) ratingBar.getRating()).enqueue(new Callback<ApiResponse>() {
+                            @Override
+                            public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
+                                Toast.makeText(context, "Thankyou for your feedback", Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onFailure(Call<ApiResponse> call, Throwable t) {
+                                Toast.makeText(context, "connection problem", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+                        orderService.updateOrderRating((int) ratingBar.getRating(),orderList.get(pos).getOrderId()).enqueue(new Callback<Void>() {
+                            @Override
+                            public void onResponse(Call<Void> call, Response<Void> response) {
+                                    getOrderList();
+                                    dialog.dismiss();
+                            }
+
+                            @Override
+                            public void onFailure(Call<Void> call, Throwable t) {
+                                getOrderList();
+                                dialog.dismiss();
+                            }
+                        });
+
+                    }
+                });
+
+                alert.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                alert.show();
+            }
+
+            else {
+
+                ratingBar.setRating(orderList.get(pos).getOrderRating().floatValue());
+
+                final AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+                alert.setTitle("Rating");
+                alert.setMessage("you rated the foodmaker");
+                alert.setView(view);
+
+                alert.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(final DialogInterface dialog, int which) {
+
+                        foodmakerService.setRatings(orderList.get(pos).getOrderCustomerId(),orderList.get(pos).getFoodmakerId(),
+                                (int) ratingBar.getRating()).enqueue(new Callback<ApiResponse>() {
+                            @Override
+                            public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
+                                Toast.makeText(context, "Thankyou for your feedback", Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onFailure(Call<ApiResponse> call, Throwable t) {
+                                Toast.makeText(context, "connection problem", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+                        orderService.updateOrderRating((int) ratingBar.getRating(),orderList.get(pos).getOrderId()).enqueue(new Callback<Void>() {
+                            @Override
+                            public void onResponse(Call<Void> call, Response<Void> response) {
+                                    getOrderList();
+                                    dialog.dismiss();
+                            }
+
+                            @Override
+                            public void onFailure(Call<Void> call, Throwable t) {
+                                getOrderList();
+                                dialog.dismiss();
+                            }
+                        });
+
+                    }
+                });
+
+                alert.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                alert.show();
+            }
+
+
+        }
+
         public void removeAt(int position) {
             customerOrderList.remove(position);
             notifyItemRemoved(position);
             notifyItemRangeChanged(position, customerOrderList.size());
         }
-
-
 
         class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
@@ -348,3 +475,6 @@ public class DoneOrdersFragments extends Fragment{
     }
 
 }
+
+
+

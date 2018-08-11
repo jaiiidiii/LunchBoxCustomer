@@ -1,6 +1,7 @@
 package com.jayzonsolutions.LunchBox.Fragments;
 
 import android.app.Activity;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -8,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -67,7 +69,9 @@ public class DetailFragment extends Fragment {
 
     private Map<Integer,Double> orderdishes;
     private Map<Integer,CartItem> cartItemMap;
-//    private ProductArrayList productsArrayList;
+//    private ProductArrayList productsArrayList;;
+
+    ImageView back;
 
     private TextView quantityOfTotalProduct, priceOfTotalProduct, next;
     private Categories categories;
@@ -95,8 +99,37 @@ public class DetailFragment extends Fragment {
         orderdishes = new HashMap<>();
         cartItemMap = new HashMap<>();
 
+
+//        ((BaseActivity)activity).setOnBackPressedListener(new BaseBackPressedListener(activity));
+
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_detail, container, false);
+
+        back = view.findViewById(R.id.back);
+
+
+
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+//                FragmentManager manager = getFragmentManager();
+////                android.support.v4.app.FragmentTransaction transaction = manager.beginTransaction();
+////                transaction.replace(R.id.container,YOUR_FRAGMENT_NAME,YOUR_FRAGMENT_STRING_TAG);
+////                transaction.addToBackStack(null);
+////                transaction.commit();
+
+//                Toast.makeText(getActivity(), "clicked", Toast.LENGTH_SHORT).show();
+//                FragmentManager manager = getFragmentManager();
+//                assert manager != null;
+//                manager.beginTransaction().replace(R.id.fragment_container, new DishesFragment()).commit();
+
+//                adapter.addFragment(new DishesFragment(), "DISHES");
+            }
+        });
+
+
 
         startAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.bounce);
 
@@ -126,7 +159,7 @@ public class DetailFragment extends Fragment {
         foodmakerService.getDishesByFoodmakerId(id).enqueue(new Callback<List<FoodmakerDishes>>() {
             @Override
             public void onResponse(@NonNull Call<List<FoodmakerDishes>> call, @NonNull Response<List<FoodmakerDishes>> response) {
-                Toast.makeText(getContext(), "success" , Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "success" , Toast.LENGTH_LONG).show();
 
               foodmakerDishesList = response.body();
               mAdapter.setFoodmakerDishesList(foodmakerDishesList);
@@ -179,7 +212,6 @@ public class DetailFragment extends Fragment {
 
 
     }
-
 
     public class RecycleAdapter_AddProduct extends RecyclerView.Adapter<RecycleAdapter_AddProduct.MyViewHolder> {
 
