@@ -89,12 +89,10 @@ public class signin extends AppCompatActivity {
                     }
                 });
 
-
+                Intent intent = new Intent(signin.this, customerActivity.class);
+                startActivity(intent);
              //   }
-                //api call end
 
-               /* Intent intent = new Intent(signin.this, customerActivity.class);
-                startActivity(intent);*/
 
 
             }

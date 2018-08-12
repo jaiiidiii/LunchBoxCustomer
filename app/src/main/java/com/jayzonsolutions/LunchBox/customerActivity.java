@@ -1,16 +1,27 @@
 package com.jayzonsolutions.LunchBox;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
@@ -18,22 +29,53 @@ import com.jayzonsolutions.LunchBox.Fragments.ChatFragment;
 import com.jayzonsolutions.LunchBox.Fragments.MessageFragment;
 import com.jayzonsolutions.LunchBox.Fragments.ProfileFragment;
 
+import java.io.File;
+
 public class customerActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawer;
     ToggleButton toggleButton;
+    private static int RESULT_LOAD_IMAGE = 1;
+    ImageView selectImage;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer);
+
         drawer = findViewById(R.id.drawer_layout);
         Toolbar toolbar = findViewById(R.id.toolbar);
+     //  selectImage = (ImageView)findViewById(R.id.select_img);
         setSupportActionBar(toolbar);
 
         NavigationView navigationView = findViewById(R.id.nav_view);
 
         navigationView.setNavigationItemSelectedListener(this);
+       View  headerLayout = navigationView.getHeaderView(0);
+               /* navigationView.inflateHeaderView(R.layout.nav_header);*/
+        selectImage = headerLayout.findViewById(R.id.select_img);
 
+
+
+
+
+
+       /* String[] permissions = {"android.permission.READ_EXTERNAL_STORAGE"};
+        ActivityCompat.requestPermissions(this, permissions, 1); // without sdk version check
+*/
+
+        //   selectImage.setImageBitmap(BitmapFactory.decodeFile("/storage/emulated/0/DCIM/Camera/IMG_20180812_172935709.jpg"));
+        /*File imgFile = new  File("/storage/emulated/0/DCIM/Camera/IMG_20180812_172935709.jpg");
+
+        if(imgFile.exists()){
+
+            Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+
+
+
+            selectImage.setImageBitmap(myBitmap);
+
+        }
+*/
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,
                 drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -47,6 +89,28 @@ public class customerActivity extends AppCompatActivity implements NavigationVie
                     new MessageFragment()).commit();
             navigationView.setCheckedItem(R.id.nav_message);
         }
+
+        /***
+         * image working
+         */
+
+        selectImage.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+
+                Intent i = new Intent(
+                        Intent.ACTION_PICK,
+                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+                startActivityForResult(i, RESULT_LOAD_IMAGE);
+            }
+        });
+
+        /***
+         * image working end
+         */
+
 
         /**
          * toggle button working
@@ -105,5 +169,75 @@ public class customerActivity extends AppCompatActivity implements NavigationVie
         } else {
             super.onBackPressed();
         }
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
+
+            String[] permissions = {"android.permission.READ_EXTERNAL_STORAGE"};
+            ActivityCompat.requestPermissions(this, permissions, 1); // without sdk version check
+            if(isPermissionGranted()){
+                Uri selectedImage = data.getData();
+                String[] filePathColumn = { MediaStore.Images.Media.DATA };
+
+                Cursor cursor = this.getContentResolver().query(selectedImage,
+                        filePathColumn, null, null, null);
+                String picturePath = null;
+                if( cursor == null){
+                    picturePath =  selectedImage.getPath();
+                }else{
+                    cursor.moveToFirst();
+                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                    picturePath = cursor.getString(columnIndex);
+                    cursor.close();
+                }
+
+
+                ImageView imageView = (ImageView) findViewById(R.id.select_img);
+                imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+            }
+
+
+
+        }
+
+
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == 1) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // save file
+
+                /*File imgFile = new  File("/storage/emulated/0/DCIM/Camera/IMG_20180812_172935709.jpg");
+
+                if(imgFile.exists()){
+
+                    Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+                   selectImage.setImageBitmap(myBitmap);
+
+                }*/
+
+            } else {
+                Toast.makeText(getApplicationContext(), "PERMISSION_DENIED", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    public boolean isPermissionGranted() {
+
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (checkSelfPermission("android.permission.READ_EXTERNAL_STORAGE")  == PackageManager.PERMISSION_GRANTED){
+                Log.v("permission", "Permission is granted");
+                return true;
+            }
+
+
+        }
+        return false;
     }
 }
