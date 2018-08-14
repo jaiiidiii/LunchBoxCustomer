@@ -28,8 +28,18 @@ import android.widget.ToggleButton;
 import com.jayzonsolutions.LunchBox.Fragments.ChatFragment;
 import com.jayzonsolutions.LunchBox.Fragments.MessageFragment;
 import com.jayzonsolutions.LunchBox.Fragments.ProfileFragment;
+import com.jayzonsolutions.LunchBox.Service.CustomerService;
+import com.jayzonsolutions.LunchBox.model.Customer;
 
 import java.io.File;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class customerActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -37,6 +47,7 @@ public class customerActivity extends AppCompatActivity implements NavigationVie
     ToggleButton toggleButton;
     private static int RESULT_LOAD_IMAGE = 1;
     ImageView selectImage;
+    CustomerService customerService;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -197,6 +208,40 @@ public class customerActivity extends AppCompatActivity implements NavigationVie
 
                 ImageView imageView = (ImageView) findViewById(R.id.select_img);
                 imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+                customerService = ApiUtils.getCustomerService();
+                File file = new File(picturePath);
+               /* RequestBody requestFile =
+                        RequestBody.create(MediaType.parse("multipart/form-data"), file);
+*/
+                RequestBody requestFile =
+                        RequestBody.create(MediaType.parse("multipart/form-data"), file);
+
+                MultipartBody.Part body =
+                        MultipartBody.Part.createFormData("file", file.getName(), requestFile);
+
+
+                if(file.exists()){
+                    customerService.uploadUserImage(1,body).enqueue(new Callback<ResponseBody>() {
+                        // mAPIService.savePost(useremail.getText().toString(), userpass.getText().toString(),DeviceID).enqueue(new Callback<Customer>() {
+                        @Override
+                        public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                            if(response.body() == null){
+                            }else{
+                            }
+
+
+
+                            //
+                        }
+                        @Override
+                        public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+
+                        }
+                    });
+                }
+
+
+
             }
 
 
