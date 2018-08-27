@@ -2,6 +2,7 @@ package com.jayzonsolutions.LunchBox.Adaptor;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -20,9 +21,9 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.jayzonsolutions.LunchBox.ApiUtils;
 import com.jayzonsolutions.LunchBox.Fragments.DetailFragment;
-import com.jayzonsolutions.LunchBox.Fragments.DishesFragment;
 import com.jayzonsolutions.LunchBox.R;
 import com.jayzonsolutions.LunchBox.Service.ItemClickListener;
+import com.jayzonsolutions.LunchBox.customerActivity;
 import com.jayzonsolutions.LunchBox.model.Foodmaker;
 
 import java.math.BigDecimal;
@@ -73,7 +74,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Myview
 
 
 
-      //  Glide.with(context).load(movieList.get(position).getImageUrl()).apply(RequestOptions.centerCropTransform()).into(holder.FoodMakerImage);
+        //  Glide.with(context).load(movieList.get(position).getImageUrl()).apply(RequestOptions.centerCropTransform()).into(holder.FoodMakerImage);
       /*  Glide.with(context).load(movieList.get(position).
                 getFoodmakerImagePath()).
                 apply(RequestOptions.
@@ -107,13 +108,13 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Myview
 
                 v.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new DetailFragment()).commit();*/
-                AppCompatActivity activity = (AppCompatActivity) v.getContext();
-                DetailFragment myFragment = new DetailFragment();
-                myFragment.setId(movieList.get(position).getFoodmakerId());
-                activity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, myFragment).addToBackStack(null).commit();
-
-
-
+//                AppCompatActivity activity = (AppCompatActivity) v.getContext();
+//                DetailFragment myFragment = new DetailFragment();
+//                myFragment.setId(movieList.get(position).getFoodmakerId());
+//                customerActivity.fragmentManager.beginTransaction().replace(R.id.fragment_container, myFragment).addToBackStack(null).commit();
+                Intent intent = new Intent(context,DetailFragment.class);
+                intent.putExtra("id", movieList.get(position).getFoodmakerId());
+                context.startActivity(intent);
             }
         });
     }

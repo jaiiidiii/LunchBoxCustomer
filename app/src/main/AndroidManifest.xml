@@ -35,9 +35,13 @@
             android:name=".customerActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".PlaceOrderActivity"
+            android:name=".Fragments.DetailFragment"
             android:theme="@style/AppTheme.NoActionBar" />
 
+        <activity android:name=".PlaceOrderActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBy0o0b0qGftZGA1nBq05OtqLSQBAJZpfk" />
@@ -48,6 +52,7 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
         <service android:name=".Service.MyFirebaseInstanceIDService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
@@ -55,10 +60,6 @@
         </service>
 
         <!-- ./Firebase Notifications -->
-        <activity
-            android:name=".UserProfile"
-            android:label="@string/title_activity_user_profile"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

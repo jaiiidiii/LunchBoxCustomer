@@ -11,6 +11,7 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.jayzonsolutions.LunchBox.R;
 
@@ -25,7 +26,7 @@ public class MessageFragment extends Fragment {
 
     private int[] tabIcons = {
             R.drawable.ic_message,
-          //  R.drawable.ic_message,
+            //  R.drawable.ic_message,
             //    R.drawable.ic_message
     };
 
@@ -44,9 +45,7 @@ public class MessageFragment extends Fragment {
         tabLayout = v.findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
         setupTabIcons();
-
         return v;
-
     }
 
     private void setupViewPager(ViewPager viewPager) {
@@ -96,5 +95,4 @@ public class MessageFragment extends Fragment {
             return mFragmentTitleList.get(position);
         }
     }
-
 }

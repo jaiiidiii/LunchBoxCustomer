@@ -57,42 +57,46 @@ public class signin extends AppCompatActivity {
 
                 //  Toast.makeText(signin.this,"clicked",Toast.LENGTH_LONG).show();
                 //api call
-           //     if (validate()) {
+                if (validate()) {
 
 /*
                 if(useremail.getText().toString()=="" ||userpass.getText().toString() == ""){
                     Toast.makeText(signin.this, "Fields are required can't be empty", Toast.LENGTH_LONG).show();
                     return;
                 }
+                Intent intent = new Intent(signin.this, customerActivity.class);
 */
 
-                mAPIService.savePost("sohail@gmail.com", "123456",DeviceID).enqueue(new Callback<Customer>() {
-               // mAPIService.savePost(useremail.getText().toString(), userpass.getText().toString(),DeviceID).enqueue(new Callback<Customer>() {
-                    @Override
-                    public void onResponse(@NonNull Call<Customer> call, @NonNull Response<Customer> response) {
-                       if(response.body() == null){
-                           Toast.makeText(signin.this, "Email Address or Password is incorrect", Toast.LENGTH_LONG).show();
-                       }else{
-                           Toast.makeText(signin.this, "Successfully Logged in", Toast.LENGTH_LONG).show();
-                           Constant.customer = response.body();
-                           Intent intent = new Intent(signin.this, customerActivity.class);
-                           startActivity(intent);
-                       }
+                    //mAPIService.savePost("sohail@gmail.com", "123456",DeviceID).enqueue(new Callback<Customer>() {
+
+                    mAPIService.savePost(useremail.getText().toString(), userpass.getText().toString(),DeviceID).enqueue(new Callback<Customer>() {
+                        @Override
+                        public void onResponse(@NonNull Call<Customer> call, @NonNull Response<Customer> response) {
+                            if(response.body() == null){
+                                Toast.makeText(signin.this, "Email Address or Password is incorrect", Toast.LENGTH_LONG).show();
+                            }else{
+                                Toast.makeText(signin.this, "Successfully Logged in", Toast.LENGTH_LONG).show();
+                                Constant.customer = response.body();
+                                Intent intent = new Intent(signin.this, customerActivity.class);
+                                startActivity(intent);
+                            }
 
 
 
-                        //
-                    }
-                    @Override
-                    public void onFailure(@NonNull Call<Customer> call, @NonNull Throwable t) {
-                        Toast.makeText(signin.this, "Connection Problem ", Toast.LENGTH_LONG).show();
-                    }
-                });
+                            //
+                        }
+                        @Override
+                        public void onFailure(@NonNull Call<Customer> call, @NonNull Throwable t) {
+                            Toast.makeText(signin.this, "Connection Problem ", Toast.LENGTH_LONG).show();
+                        }
+                    });
 
-                Intent intent = new Intent(signin.this, customerActivity.class);
-                startActivity(intent);
-             //   }
 
+                }
+                //api call end
+
+               /* Intent intent = new Intent(signin.this, customerActivity.class);
+                startActivity(intent);*/
 
 
             }

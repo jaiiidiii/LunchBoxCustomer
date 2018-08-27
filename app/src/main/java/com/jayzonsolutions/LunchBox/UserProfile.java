@@ -60,12 +60,12 @@ public class UserProfile extends AppCompatActivity {
         /***
          *
          * */
-         dispName = findViewById(R.id.dispName);
+/*         dispName = findViewById(R.id.dispName);
          dispEmail  = findViewById(R.id.dispEmail);
          userPhone  = findViewById(R.id.userPhone);
          userRatting  = findViewById(R.id.userRatting);
          userAddress  = findViewById(R.id.userAddress);
-        dispcnic =  findViewById(R.id.dispcnic);
+        dispcnic =  findViewById(R.id.dispcnic);*/
         setAllFieldWithDefault();
 
 
@@ -133,12 +133,14 @@ public class UserProfile extends AppCompatActivity {
     }
 
     public void setAllFieldEnable(){
+/*
         dispName = findViewById(R.id.dispName);
         dispEmail  = findViewById(R.id.dispEmail);
         userPhone  = findViewById(R.id.userPhone);
         userRatting  = findViewById(R.id.userRatting);
         userAddress  = findViewById(R.id.userAddress);
         dispcnic =  findViewById(R.id.dispcnic);
+*/
 
 
         //btn
@@ -158,12 +160,12 @@ public class UserProfile extends AppCompatActivity {
         dispcnic.setEnabled(true);
     }
     public void setAllFieldDisable(){
-        dispName = findViewById(R.id.dispName);
+/*        dispName = findViewById(R.id.dispName);
         dispEmail  = findViewById(R.id.dispEmail);
         userPhone  = findViewById(R.id.userPhone);
         userRatting  = findViewById(R.id.userRatting);
         userAddress  = findViewById(R.id.userAddress);
-        dispcnic =  findViewById(R.id.dispcnic);
+        dispcnic =  findViewById(R.id.dispcnic);*/
         //btn
 
         btnSave = findViewById(R.id.btnSave);
@@ -182,12 +184,12 @@ public class UserProfile extends AppCompatActivity {
         dispcnic.setEnabled(false);
     }
     public void setAllFieldWithDefault(){
-        dispName = findViewById(R.id.dispName);
+/*        dispName = findViewById(R.id.dispName);
         dispEmail  = findViewById(R.id.dispEmail);
         userPhone  = findViewById(R.id.userPhone);
         userRatting  = findViewById(R.id.userRatting);
         userAddress  = findViewById(R.id.userAddress);
-        dispcnic =  findViewById(R.id.dispcnic);
+        dispcnic =  findViewById(R.id.dispcnic);*/
         //btn
 
         dispName.setText(""+Constant.customer.getCustomerName());
