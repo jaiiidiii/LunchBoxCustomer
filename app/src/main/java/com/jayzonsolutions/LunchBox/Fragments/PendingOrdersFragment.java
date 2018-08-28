@@ -36,6 +36,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.jayzonsolutions.LunchBox.ApiUtils;
+import com.jayzonsolutions.LunchBox.Constant;
 import com.jayzonsolutions.LunchBox.GlobalVariables;
 import com.jayzonsolutions.LunchBox.R;
 import com.jayzonsolutions.LunchBox.Service.APIService;
@@ -113,7 +114,11 @@ public class PendingOrdersFragment extends Fragment {
         super.onResume();
         context = getActivity();
 
-        orderService.getOrdersBycustomerId(13).enqueue(new Callback<List<Order>>() {
+        String customerIdStr =  Constant.customer.getCustomerId();
+        Integer customerId = Integer.parseInt(customerIdStr);
+
+
+        orderService.getOrdersBycustomerId(customerId).enqueue(new Callback<List<Order>>() {
 
             @Override
             public void onResponse(@NonNull Call<List<Order>> call, @NonNull Response<List<Order>> response) {

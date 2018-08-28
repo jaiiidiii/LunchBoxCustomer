@@ -120,12 +120,23 @@ public class DoneOrdersFragments extends Fragment{
             @Override
             public void onResponse(@NonNull Call<List<Order>> call, @NonNull Response<List<Order>> response) {
 
+                if(orderList.size() <= 0)
+                {
                     orderList = response.body();
                     if(orderList == null){
                         orderList = new ArrayList<Order>();
                     }
                     Log.d("TAG", "Response = " + orderList);
                     recyclerAdapter.setCustomerOrderList(orderList);
+                }
+                else
+                {
+                    Toast.makeText(context, "no current orders", Toast.LENGTH_LONG).show();
+                }
+
+
+
+
             }
 
             @Override

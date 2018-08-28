@@ -174,6 +174,15 @@ public class PlaceOrderActivity extends AppCompatActivity implements
                     Toast.makeText(PlaceOrderActivity.this,"Your Cart is Empty",Toast.LENGTH_LONG).show();
                     return;
                 }
+                if(placeDetails.getText().toString() == ""){
+                    Toast.makeText(PlaceOrderActivity.this,"Please Insert Delivery Address ",Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                if(txtDate.getText().toString() == ""){
+                    Toast.makeText(PlaceOrderActivity.this,"Please Select Date",Toast.LENGTH_LONG).show();
+                    return;
+                }
 
                 Double totalPrice = 0.00;
                 Set orderdishesKey1 = Cart.orderdishes.keySet();

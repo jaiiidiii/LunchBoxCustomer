@@ -1,6 +1,7 @@
 package com.jayzonsolutions.LunchBox;
 
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,6 +10,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -153,6 +155,36 @@ public class customerActivity extends AppCompatActivity implements NavigationVie
                 break;
             case R.id.nav_logout:
                 Toast.makeText(this, "Logout", Toast.LENGTH_SHORT).show();
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(customerActivity.this);
+
+                // Setting Dialog Title
+                alertDialog.setTitle("Logout...");
+
+                // Setting Dialog Message
+                alertDialog.setMessage("Are you sure you want logout?");
+
+                // Setting Icon to Dialog
+               // alertDialog.setIcon(R.drawable.delete);
+
+                // Setting Positive "Yes" Button
+                alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,int which) {
+                       Constant.customer = null;
+                    Intent  in = new Intent(customerActivity.this,signin.class);
+                    startActivity(in);
+                    }
+                });
+
+                // Setting Negative "NO" Button
+                alertDialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Write your code here to invoke NO event
+                        dialog.cancel();
+                    }
+                });
+
+                // Showing Alert Message
+                alertDialog.show();
                 break;
         }
         drawer.closeDrawer(GravityCompat.START);
