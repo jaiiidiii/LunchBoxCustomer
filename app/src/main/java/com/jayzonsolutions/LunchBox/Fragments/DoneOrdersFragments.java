@@ -27,6 +27,7 @@ import android.widget.Toast;
 
 
 import com.jayzonsolutions.LunchBox.ApiUtils;
+import com.jayzonsolutions.LunchBox.Constant;
 import com.jayzonsolutions.LunchBox.GlobalVariables;
 import com.jayzonsolutions.LunchBox.R;
 import com.jayzonsolutions.LunchBox.Service.APIService;
@@ -111,13 +112,18 @@ public class DoneOrdersFragments extends Fragment{
     }
 
     public void getOrderList() {
+        String customerIdStr =  Constant.customer.getCustomerId();
+        Integer customerId = Integer.parseInt(customerIdStr);
 
-        orderService.getDoneOrdersBycustomerId(13).enqueue(new Callback<List<Order>>() {
+        orderService.getDoneOrdersBycustomerId(customerId).enqueue(new Callback<List<Order>>() {
 
             @Override
             public void onResponse(@NonNull Call<List<Order>> call, @NonNull Response<List<Order>> response) {
 
                     orderList = response.body();
+                    if(orderList == null){
+                        orderList = new ArrayList<Order>();
+                    }
                     Log.d("TAG", "Response = " + orderList);
                     recyclerAdapter.setCustomerOrderList(orderList);
             }

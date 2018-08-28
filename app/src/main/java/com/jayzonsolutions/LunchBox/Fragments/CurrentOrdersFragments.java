@@ -111,6 +111,9 @@ public class CurrentOrdersFragments extends Fragment {
                 if(orderList.size() <= 0)
                 {
                     orderList = response.body();
+                    if(orderList == null){
+                        orderList = new ArrayList<Order>();
+                    }
                     Log.d("TAG", "Response = " + orderList);
                     recyclerAdapter.setCustomerOrderList(orderList);
                 }

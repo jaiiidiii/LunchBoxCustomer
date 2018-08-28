@@ -11,6 +11,9 @@ import android.view.View;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.jayzonsolutions.LunchBox.Service.CustomerService;
 import com.jayzonsolutions.LunchBox.model.Address;
 import com.jayzonsolutions.LunchBox.model.ApiResponse;
@@ -30,7 +33,8 @@ public class UserProfile extends AppCompatActivity {
     MyTextView userRatting;
     MyEditText userAddress;
     MyEditText dispcnic;
-    Switch switcher;
+    com.alexzh.circleimageview.CircleImageView circleview;
+    com.rey.material.widget.Switch switcher;
 
     FloatingActionButton btnSave;
     FloatingActionButton btnCancel;
@@ -46,6 +50,42 @@ public class UserProfile extends AppCompatActivity {
 
         customerService = ApiUtils.getCustomerService();
 
+        switcher =  findViewById(R.id.switcher);
+
+        circleview = findViewById(R.id.circleview);
+        /**
+         * images
+         * */
+        //   String imagePath = ((movieList.get(position).getImagepath() != null)?movieList.get(position).getImagepath():"http://localhost:8080/images/biryani.jpg");
+
+       /* if(Constant.customer.getCustomerImagePath().length() > 21){
+            String imagePath = Constant.customer.getCustomerImagePath();;
+
+
+            Glide.with(this).load(ApiUtils.BASE_URL+(imagePath.substring(21))).
+                    apply(RequestOptions.
+                            centerCropTransform().fitCenter().
+                            diskCacheStrategy(DiskCacheStrategy.ALL)).
+                    into(circleview);
+        }*/
+
+
+
+        int foodmakerStatus = 0;
+        /*switcher.setOnCheckedChangeListener(new com.rey.material.widget.Switch.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(com.rey.material.widget.Switch view, boolean checked) {
+                if(checked){
+                    foodmakerStatus = 1;
+                    Toast.makeText(getApplication(), "enabled", Toast.LENGTH_SHORT).show();
+                } else {
+                    foodmakerStatus = 2;
+                    Toast.makeText(getApplication(), "disabled", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        */
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,12 +100,12 @@ public class UserProfile extends AppCompatActivity {
         /***
          *
          * */
-/*         dispName = findViewById(R.id.dispName);
-         dispEmail  = findViewById(R.id.dispEmail);
-         userPhone  = findViewById(R.id.userPhone);
-         userRatting  = findViewById(R.id.userRatting);
-         userAddress  = findViewById(R.id.userAddress);
-        dispcnic =  findViewById(R.id.dispcnic);*/
+        dispName = findViewById(R.id.dispName);
+        dispEmail  = findViewById(R.id.dispEmail);
+        userPhone  = findViewById(R.id.userPhone);
+      //  userRatting  = findViewById(R.id.userRatting);
+        userAddress  = findViewById(R.id.userAddress);
+        dispcnic =  findViewById(R.id.dispcnic);
         setAllFieldWithDefault();
 
 
@@ -192,12 +232,12 @@ public class UserProfile extends AppCompatActivity {
         dispcnic =  findViewById(R.id.dispcnic);*/
         //btn
 
-        dispName.setText(""+Constant.customer.getCustomerName());
+      /*  dispName.setText(""+Constant.customer.getCustomerName());
         dispEmail.setText(""+Constant.customer.getCustomerEmail());
         userPhone.setText(""+Constant.customer.getCustomerPhoneNumber());
         userAddress.setText(""+Constant.customer.getAddress().getAddress());
         dispcnic.setText(""+Constant.customer.getCustomerNic());
-        setAllFieldDisable();
+        setAllFieldDisable();*/
     }
 
 

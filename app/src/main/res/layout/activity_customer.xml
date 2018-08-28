@@ -50,14 +50,6 @@
                     android:textColor="@color/dark_text"
                     android:textSize="17sp"
                     android:textStyle="bold" />
-                <ToggleButton
-                    android:id="@+id/update_user_status"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checked="true"
-                    android:layout_centerHorizontal="true"
-                    android:textOff="Disable"
-                    android:textOn="Enable"/>
 
                 <ImageView
                     android:layout_width="20dp"
@@ -99,6 +91,7 @@
                     </FrameLayout>
 
                     <ImageView
+                        android:id="@+id/btnCart"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:layout_gravity="center"

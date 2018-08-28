@@ -145,4 +145,13 @@ public class signin extends AppCompatActivity {
         //Toast.makeText(this, "Firebase Reg Id is not received yet!", Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(Constant.customer != null){
+            Intent in =new Intent(this,customerActivity.class);
+            startActivity(in);
+        }
+    }
+
 }
