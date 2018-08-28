@@ -48,6 +48,7 @@ public class UserProfile extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
         customerService = ApiUtils.getCustomerService();
 
         switcher =  findViewById(R.id.switcher);
@@ -58,8 +59,8 @@ public class UserProfile extends AppCompatActivity {
          * */
         //   String imagePath = ((movieList.get(position).getImagepath() != null)?movieList.get(position).getImagepath():"http://localhost:8080/images/biryani.jpg");
 
-       /* if(Constant.customer.getCustomerImagePath().length() > 21){
-            String imagePath = Constant.customer.getCustomerImagePath();;
+        if(Constant.customer.getCustomerImagePath().length() > 21){
+            String imagePath = Constant.customer.getCustomerImagePath();
 
 
             Glide.with(this).load(ApiUtils.BASE_URL+(imagePath.substring(21))).
@@ -67,7 +68,7 @@ public class UserProfile extends AppCompatActivity {
                             centerCropTransform().fitCenter().
                             diskCacheStrategy(DiskCacheStrategy.ALL)).
                     into(circleview);
-        }*/
+        }
 
 
 
@@ -103,7 +104,7 @@ public class UserProfile extends AppCompatActivity {
         dispName = findViewById(R.id.dispName);
         dispEmail  = findViewById(R.id.dispEmail);
         userPhone  = findViewById(R.id.userPhone);
-      //  userRatting  = findViewById(R.id.userRatting);
+        userRatting  = findViewById(R.id.userRatting);
         userAddress  = findViewById(R.id.userAddress);
         dispcnic =  findViewById(R.id.dispcnic);
         setAllFieldWithDefault();
@@ -125,12 +126,13 @@ public class UserProfile extends AppCompatActivity {
                 customer.setCustomerEmail(""+dispEmail.getText().toString());
                 customer.setCustomerPhoneNumber(""+userPhone.getText().toString());
                 customer.setCustomerNic(""+dispcnic.getText().toString());
-                customer.setCustomerName(""+dispName.getText().toString());
-                customer.setCustomerName(""+dispName.getText().toString());
+
                 if(userAddress.getText().toString() == Constant.customer.getAddress().getAddress()){
                     Address address = new Address(""+userAddress.getText().toString(), "  Karachi");
                     customer.setAddress(address);
                 }
+                //foodmaker.setFoodmakerCreatedAt(null);
+               // foodmaker.setFoodmakerLastUpdated(null);
 
 
 
@@ -150,11 +152,11 @@ public class UserProfile extends AppCompatActivity {
             }
         });
 
-         btnCancel = (FloatingActionButton) findViewById(R.id.btnCancel);
+        btnCancel = (FloatingActionButton) findViewById(R.id.btnCancel);
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                 setAllFieldWithDefault();
+                setAllFieldWithDefault();
             }
         });
 
@@ -173,14 +175,12 @@ public class UserProfile extends AppCompatActivity {
     }
 
     public void setAllFieldEnable(){
-/*
         dispName = findViewById(R.id.dispName);
         dispEmail  = findViewById(R.id.dispEmail);
         userPhone  = findViewById(R.id.userPhone);
         userRatting  = findViewById(R.id.userRatting);
         userAddress  = findViewById(R.id.userAddress);
         dispcnic =  findViewById(R.id.dispcnic);
-*/
 
 
         //btn
@@ -200,12 +200,12 @@ public class UserProfile extends AppCompatActivity {
         dispcnic.setEnabled(true);
     }
     public void setAllFieldDisable(){
-/*        dispName = findViewById(R.id.dispName);
+        dispName = findViewById(R.id.dispName);
         dispEmail  = findViewById(R.id.dispEmail);
         userPhone  = findViewById(R.id.userPhone);
         userRatting  = findViewById(R.id.userRatting);
         userAddress  = findViewById(R.id.userAddress);
-        dispcnic =  findViewById(R.id.dispcnic);*/
+        dispcnic =  findViewById(R.id.dispcnic);
         //btn
 
         btnSave = findViewById(R.id.btnSave);
@@ -224,20 +224,20 @@ public class UserProfile extends AppCompatActivity {
         dispcnic.setEnabled(false);
     }
     public void setAllFieldWithDefault(){
-/*        dispName = findViewById(R.id.dispName);
+        dispName = findViewById(R.id.dispName);
         dispEmail  = findViewById(R.id.dispEmail);
         userPhone  = findViewById(R.id.userPhone);
         userRatting  = findViewById(R.id.userRatting);
         userAddress  = findViewById(R.id.userAddress);
-        dispcnic =  findViewById(R.id.dispcnic);*/
+        dispcnic =  findViewById(R.id.dispcnic);
         //btn
 
-      /*  dispName.setText(""+Constant.customer.getCustomerName());
+        dispName.setText(""+Constant.customer.getCustomerName());
         dispEmail.setText(""+Constant.customer.getCustomerEmail());
         userPhone.setText(""+Constant.customer.getCustomerPhoneNumber());
-        userAddress.setText(""+Constant.customer.getAddress().getAddress());
+        userAddress.setText(""+Constant.customer.getCustomerAddressId().getAddress());
         dispcnic.setText(""+Constant.customer.getCustomerNic());
-        setAllFieldDisable();*/
+        setAllFieldDisable();
     }
 
 
@@ -245,3 +245,5 @@ public class UserProfile extends AppCompatActivity {
 
 
 }
+
+

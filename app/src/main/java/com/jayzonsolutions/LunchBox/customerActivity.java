@@ -27,6 +27,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.jayzonsolutions.LunchBox.Fragments.ChatFragment;
 import com.jayzonsolutions.LunchBox.Fragments.MessageFragment;
 import com.jayzonsolutions.LunchBox.Fragments.ProfileFragment;
+import com.jayzonsolutions.LunchBox.model.Cart;
 
 public class customerActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -36,6 +37,7 @@ public class customerActivity extends AppCompatActivity implements NavigationVie
     ImageView selectImage;
     TextView userName;
     ImageView btnCart;
+    TextView cartItem;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,6 +86,8 @@ public class customerActivity extends AppCompatActivity implements NavigationVie
         }
 
         btnCart = findViewById(R.id.btnCart);
+        cartItem = findViewById(R.id.numOfItem);
+
         btnCart.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -200,5 +204,11 @@ public class customerActivity extends AppCompatActivity implements NavigationVie
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        cartItem = findViewById(R.id.numOfItem);
+        cartItem.setText(""+Cart.orderdishes.size());
+    }
 
 }
