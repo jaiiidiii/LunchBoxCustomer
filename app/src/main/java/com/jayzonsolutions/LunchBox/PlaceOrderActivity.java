@@ -87,6 +87,9 @@ public class PlaceOrderActivity extends AppCompatActivity implements
     private Map<Integer,CartItem> cartItemMap;
     Animation startAnimation;
 
+    public String lang = "0.00";
+    public String lat = "0.00";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -196,6 +199,19 @@ public class PlaceOrderActivity extends AppCompatActivity implements
                     order.setOrderCustomerId(customerId);
                     order.setOrderShipmentAddress(placeDetails.getText().toString());
                     order.setOrderDate(txtDate.getText().toString());
+
+                    /**
+                     * set lat lang
+                     * */
+                        Double latitude = Double.parseDouble(lat);
+                        Double longitude = Double.parseDouble(lang);
+
+                        order.setLatitude(latitude);
+                        order.setLongitude(longitude);
+
+                    /**
+                     *set lat lang
+                     * */
 
                     order.setOrderDeliverDate(txtDate.getText().toString());
 
@@ -386,6 +402,8 @@ startActivity(intent);
                 stBuilder.append("Address: ");*/
                 stBuilder.append(address);
                 tvPlaceDetails.setText(stBuilder.toString());
+                lang = longitude;
+                lat = latitude;
             }
         }
     }

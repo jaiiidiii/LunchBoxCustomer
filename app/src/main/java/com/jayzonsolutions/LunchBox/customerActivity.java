@@ -155,7 +155,8 @@ public class customerActivity extends AppCompatActivity implements NavigationVie
                 startActivity(in1);
                 break;
             case R.id.nav_share:
-                Toast.makeText(this, "Share", Toast.LENGTH_SHORT).show();
+                Intent in = new Intent(customerActivity.this,BillingDetails.class);
+                startActivity(in);
                 break;
             case R.id.nav_logout:
                 Toast.makeText(this, "Logout", Toast.LENGTH_SHORT).show();

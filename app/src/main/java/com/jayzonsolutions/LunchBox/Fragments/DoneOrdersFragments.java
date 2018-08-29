@@ -3,6 +3,7 @@ package com.jayzonsolutions.LunchBox.Fragments;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 
 import android.content.res.Resources;
@@ -27,6 +28,7 @@ import android.widget.Toast;
 
 
 import com.jayzonsolutions.LunchBox.ApiUtils;
+import com.jayzonsolutions.LunchBox.BillingDetails;
 import com.jayzonsolutions.LunchBox.Constant;
 import com.jayzonsolutions.LunchBox.GlobalVariables;
 import com.jayzonsolutions.LunchBox.R;
@@ -387,7 +389,13 @@ public class DoneOrdersFragments extends Fragment{
 
                     }
                 });
-
+                alert.setNeutralButton("Review Order", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent in = new Intent(getActivity(), BillingDetails.class);
+                        startActivity(in);
+                    }
+                });
                 alert.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

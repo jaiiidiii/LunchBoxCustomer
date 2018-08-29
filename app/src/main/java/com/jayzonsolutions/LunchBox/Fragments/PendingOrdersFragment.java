@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Rect;
 import android.graphics.Typeface;
@@ -36,6 +37,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.jayzonsolutions.LunchBox.ApiUtils;
+import com.jayzonsolutions.LunchBox.BillingDetails;
 import com.jayzonsolutions.LunchBox.Constant;
 import com.jayzonsolutions.LunchBox.GlobalVariables;
 import com.jayzonsolutions.LunchBox.R;
@@ -408,6 +410,13 @@ alert.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
                     dialog.dismiss();
                 }
             });
+            alertDialog.setNeutralButton("Review Order", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Intent in = new Intent(getActivity(), BillingDetails.class);
+                    startActivity(in);
+                }
+            });
             alertDialog.setNegativeButton("canel order", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -439,6 +448,7 @@ alert.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
                         dialog.dismiss();
                         }
                     });
+
 
                     alert_Dialog.show();
                 }
