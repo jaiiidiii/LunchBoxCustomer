@@ -413,6 +413,7 @@ alert.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
             alertDialog.setNeutralButton("Review Order", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
+                    BillingDetails.setOrderId(orderList.get(pos).getOrderId());
                     Intent in = new Intent(getActivity(), BillingDetails.class);
                     startActivity(in);
                 }

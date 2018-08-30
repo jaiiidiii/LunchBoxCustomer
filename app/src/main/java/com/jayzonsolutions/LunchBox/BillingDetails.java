@@ -48,7 +48,7 @@ public class BillingDetails extends AppCompatActivity {
 
         orderService = ApiUtils.getOrderService();
 
-        Integer recieveOrderId = getOrderId();
+        Integer recieveOrderId = OrderId;
         if(recieveOrderId==null){
             Intent in = new Intent(BillingDetails.this,customerActivity.class);
             startActivity(in);

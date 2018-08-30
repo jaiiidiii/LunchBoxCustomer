@@ -4,7 +4,7 @@
     <string name="already_have_an_account">Already have an account?</string>
     <string name="sign_up_for_free">Sign Up For Free</string>
     <string name="hint_pass">Password</string>
-    <string name="hint_username">Username</string>
+    <string name="hint_username">Email Address</string>
     <string name="fullname">Full Name</string>
     <string name="email">Email</string>
     <string name="create">Create</string>
