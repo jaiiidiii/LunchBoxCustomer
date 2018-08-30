@@ -1,5 +1,6 @@
 package com.jayzonsolutions.LunchBox;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -25,6 +26,7 @@ import retrofit2.Response;
 public class BillingDetails extends AppCompatActivity {
 
 
+    private static Integer OrderId;
     OrderService orderService;
     customfonts.Medium_Textview totalPriceTxt;
     customfonts.Regular_Textview billingAddress;
@@ -45,7 +47,13 @@ public class BillingDetails extends AppCompatActivity {
 
 
         orderService = ApiUtils.getOrderService();
-        orderService.getOrderByOrderId(1).enqueue(new Callback<Order>() {
+
+        Integer recieveOrderId = getOrderId();
+        if(recieveOrderId==null){
+            Intent in = new Intent(BillingDetails.this,customerActivity.class);
+            startActivity(in);
+        }
+        orderService.getOrderByOrderId(recieveOrderId).enqueue(new Callback<Order>() {
 
             @Override
             public void onResponse(@NonNull Call<Order> call, @NonNull Response<Order> response) {
@@ -115,5 +123,11 @@ public class BillingDetails extends AppCompatActivity {
 
 
     }
+    public static void setOrderId(Integer orderId){
+       OrderId = orderId;
+    }
 
+    public Integer getOrderId(){
+        return this.OrderId;
+    }
 }

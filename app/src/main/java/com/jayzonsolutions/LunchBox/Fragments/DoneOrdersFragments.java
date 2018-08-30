@@ -392,8 +392,11 @@ public class DoneOrdersFragments extends Fragment{
                 alert.setNeutralButton("Review Order", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        BillingDetails.setOrderId(orderList.get(pos).getOrderId());
+
                         Intent in = new Intent(getActivity(), BillingDetails.class);
                         startActivity(in);
+
                     }
                 });
                 alert.setNegativeButton("cancel", new DialogInterface.OnClickListener() {

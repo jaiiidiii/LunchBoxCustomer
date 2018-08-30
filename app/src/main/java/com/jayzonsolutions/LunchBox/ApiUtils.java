@@ -7,8 +7,8 @@ import com.jayzonsolutions.LunchBox.Service.OrderService;
 
 public class ApiUtils {
 
-    public static final String BASE_URL = "http://192.168.0.108:8080/";
-//    public static final String BASE_URL = "http://192.168.1.110:8080/";
+   // public static final String BASE_URL = "http://192.168.0.108:8080/";
+    public static final String BASE_URL = "https://3fe11e17.ngrok.io/";
 
 
     private ApiUtils() {
