@@ -177,12 +177,12 @@ public class PlaceOrderActivity extends AppCompatActivity implements
                     Toast.makeText(PlaceOrderActivity.this,"Your Cart is Empty",Toast.LENGTH_LONG).show();
                     return;
                 }
-                if(placeDetails.getText().toString() == ""){
+                if(placeDetails.getText().toString().equals("")){
                     Toast.makeText(PlaceOrderActivity.this,"Please Insert Delivery Address ",Toast.LENGTH_LONG).show();
                     return;
                 }
 
-                if(txtDate.getText().toString() == ""){
+                if(txtDate.getText().toString().equals("")){
                     Toast.makeText(PlaceOrderActivity.this,"Please Select Date",Toast.LENGTH_LONG).show();
                     return;
                 }
@@ -250,8 +250,10 @@ public class PlaceOrderActivity extends AppCompatActivity implements
                             Toast.makeText(PlaceOrderActivity.this,"Order Placed Successfully ",Toast.LENGTH_LONG).show();
 
                             //     System.out.println(response.body().toString());
-Intent intent = new Intent(PlaceOrderActivity.this, customerActivity.class);
-startActivity(intent);
+                            Cart.orderdishes.clear();
+                            Cart.foodmakerdishes.clear();
+                            Intent intent = new Intent(PlaceOrderActivity.this, customerActivity.class);
+                            startActivity(intent);
 
 
                         }
@@ -452,8 +454,14 @@ startActivity(intent);
         public void onBindViewHolder(@NonNull final PlaceOrderActivity.RecycleAdapter_AddProduct.MyViewHolder holder, final int position) {
 //            Products movie = productsList.get(position);
 
-            holder.title.setText(""+cartItems.get(position).getFoodmakerDishes().getName());
-            holder.price.setText(""+cartItems.get(position).getFoodmakerDishes().getPrice());
+          //  holder.title.setText(""+cartItems.get(position).getFoodmakerDishes().getName());
+          //  holder.price.setText(""+cartItems.get(position).getFoodmakerDishes().getPrice());
+
+            holder.title.setText(""+cartItems.get(position).getFoodmakerDishes().getDish().getDishName());
+            holder.price.setText(""+cartItems.get(position).getFoodmakerDishes().getDish().getDishQuantity());
+
+
+
             //  holder.price.setText(categories.getProductsArrayList().get(position).getPrice());
             Double d = cartItems.get(position).getQuantity();
             holder.quantityTxt.setText(""+d.intValue());
